@@ -20,7 +20,7 @@
 	?>
 	<header class="entry-header">
 		<?php
-		if ( 'post' === get_post_type() ) {
+		if ( 'post' === get_post_type() || 'page' === get_post_type() ) {
 			echo '<div class="entry-meta">';
 			if ( is_single() ) {
 				twentyseventeen_posted_on();
@@ -73,6 +73,8 @@
 				get_the_title()
 			)
 		);
+		
+		get_template_part( 'template-parts/page/steps', 'page' );
 
 		wp_link_pages(
 			array(

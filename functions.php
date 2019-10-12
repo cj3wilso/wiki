@@ -50,6 +50,14 @@ function auto_set_parent_terms( $object_id, $terms, $tt_ids, $taxonomy, $append,
      * We only want to move forward if there are taxonomies to set
      */
     if( empty( $tt_ids ) ) return FALSE;
+	
+	//Remove uncategorized when more than one category
+	if(count($tt_ids)>1){
+		$key = array_search(1, $tt_ids);
+		if($key){
+			wp_remove_object_terms( $object_id, array(1), $taxonomy );
+		}
+	}
 
     /**
      * Set specific post types to only set parents on.  Set $post_types = FALSE to set parents for ALL post types.
@@ -210,3 +218,20 @@ function add_cats_to_pages_definition()
 }
 
 add_action('init', 'add_cats_to_pages_definition');
+
+add_action('pre_get_posts', 'get_posts_and_pages');
+function get_posts_and_pages( $query ) {
+	
+	if (!is_admin() && $query->is_main_query()) {
+		//Only get posts or pages that have categories that aren't uncategorized
+		$term_ids = array_map(function($e) {
+			return is_object($e) ? $e->term_id : $e['term_id'];
+		}, get_categories());
+		//Remove uncategorized
+		$key = array_search(1, $term_ids);
+		unset($term_ids[$key]);
+		$query->set('post_type',array('post','page'));
+		$query->set( 'category__in', $term_ids );
+	}
+	return $query;
+}
