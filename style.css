@@ -55,10 +55,13 @@ ul#breadcrumbs, #breadcrumbs li {
 */
 .wpp-category{
 	visibility: hidden;
-    margin-left: -35px;
+    margin-left: -34px;
 }
 .wpp-category a{
 	visibility: visible;
+}
+h2.widget-title {
+    font-size: 12px;
 }
 
 
@@ -105,6 +108,15 @@ body, button, input, select, textarea {
     font-size: 18px;
 	color: #898989;
     text-rendering: optimizeLegibility;
+}
+#secondary {
+    font-size: 17px;
+}
+.wpp-category{
+	font-size: 14px;
+}
+.wpp-post-title{
+	color:#000;
 }
 a {
     color: #00b19e;
