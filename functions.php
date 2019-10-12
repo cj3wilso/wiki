@@ -10,9 +10,15 @@ add_action( 'wp_enqueue_scripts', 'enqueue_styles' );
 
 function enqueue_styles() {
 	$version = '1.0.0';
-	//if($_SERVER['HTTP_HOST']!="wiki.rcdesign.com"){
+	if($_SERVER['HTTP_HOST']!="wiki.christinewilson.ca"){
 		$version = time();
-	//}
+	}
+	// Register Bootstrap Script
+    wp_enqueue_script("bootstrap_js", "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js", array('jquery'), "4.3.1");
+
+    //Register Bootstrap Styles
+    wp_enqueue_style("bootstrap", "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css", "4.3.1");
+	
 	wp_enqueue_style( 'parent-style', get_template_directory_uri().'/style.css', array(), $version );
 	wp_enqueue_style('twentyseventeen-style', get_stylesheet_uri(), array(), $version);
 }
