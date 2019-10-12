@@ -1,0 +1,62 @@
+/*
+ Theme Name:   RC Design Wiki
+ Theme URI:    http://wiki.rcdesign.com
+ Description:  rc-design-wiki Child Theme of Twenty Seventeen
+ Author:       RC Dev Team
+ Author URI:   http://rcdesign.com
+ Template:     twentyseventeen
+ Version:      1.0.0
+ License:      GNU General Public License v2 or later
+ License URI:  http://www.gnu.org/licenses/gpl-2.0.html
+ Text Domain:  rc-design-wiki
+*/
+
+.searching-under{
+	float: left;
+	padding-right:10px;
+}
+#breadcrumbs {
+	float: left;
+    width: auto;
+	margin-top: -5.0em !important;
+}
+ul#breadcrumbs, #breadcrumbs li {
+	list-style-type:none;
+	padding:0;
+	margin:0;
+}
+#breadcrumbs li {
+	float:left;
+}
+#breadcrumbs li span {
+    display: inline-block;
+    text-decoration: none;
+    padding: 0 5px 0 0;
+    margin: 0 0 0 5px;
+}
+#breadcrumbs li:first-child span {
+    margin: 0;
+}
+/*
+.entry-footer.archive-entry {
+    border-bottom: 0; 
+    border-top:0; 
+    margin-top: 0.5em; 
+	margin-bottom:0em;
+    padding: 0;
+}
+*/
+.entry-footer.archive-entry {
+    margin-top: 0.6em; 
+}
+
+/*
+* Only needed if Wordpress Popular Posts Widget with categories showing set
+*/
+.wpp-category{
+	visibility: hidden;
+    margin-left: -35px;
+}
+.wpp-category a{
+	visibility: visible;
+}
