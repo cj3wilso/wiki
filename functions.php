@@ -199,3 +199,14 @@ function prefix_add_content ($content){
 	return $content;
 }
 add_filter ('the_content', 'prefix_add_content');
+
+
+/*
+ * Add categories to pages
+ */
+function add_cats_to_pages_definition()
+{
+    register_taxonomy_for_object_type('category', 'page');
+}
+
+add_action('init', 'add_cats_to_pages_definition');
