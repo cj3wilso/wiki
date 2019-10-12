@@ -75,10 +75,10 @@ ul#breadcrumbs, #breadcrumbs li {
 
 @font-face {
     font-family: 'functionpro_book';
-    src:    url('assets/fonts/Jivita.eot'); /* IE9 Compat Modes */
-    src:    url('assets/fonts/Jivita.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-            url('assets/fonts/Jivita.woff2') format('woff2'), /* Super Modern Browsers */
-            url('assets/fonts/Jivita.woff') format('woff'); /* Pretty Modern Browsers */
+    src:    url('assets/fonts/Function-Book.eot'); /* IE9 Compat Modes */
+    src:    url('assets/fonts/Function-Book.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+            url('assets/fonts/Function-Book.woff2') format('woff2'), /* Super Modern Browsers */
+            url('assets/fonts/Function-Book.woff') format('woff'); /* Pretty Modern Browsers */
 }
 
 .wp-block-code, .wp-block-preformatted pre {
@@ -88,6 +88,67 @@ h1,h2,h3,h4,h5,h6 {
     font-family: 'functionpro_medium', "Helvetica Neue", helvetica, arial, sans-serif;
 }
 
-body, button, input, select, textarea {
+body, p, button, input, select, textarea {
     font-family: 'functionpro_book', "Helvetica Neue", helvetica, arial, sans-serif;
+}
+.navigation-top {
+    font-size: 17px;
+}
+h2, .home.blog .entry-title, .page .panel-content .recent-posts .entry-title {
+    font-size: 22px;
+}
+.site-title {
+    font-size: 44px;
+	text-transform: none;
+}
+body, button, input, select, textarea {
+    font-size: 18px;
+	color: #898989;
+    text-rendering: optimizeLegibility;
+}
+a {
+    color: #00b19e;
+    text-decoration: none;
+}
+a:hover {
+    color: #00b19e !important;
+	-webkit-box-shadow: none !important;
+    box-shadow: none !important;
+	position: relative;
+	text-decoration:none;
+}
+
+
+.entry-content a, .entry-summary a, .comment-content a, .widget a, .site-footer .widget-area a, .posts-navigation a, .widget_authors a strong {
+    -webkit-transition-property: none;
+	-moz-transition-property: none;
+	-o-transition-property: none;
+	transition-property: none;
+	
+	-webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+a:after {
+    content: '';
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    display: block;
+    width: 0;
+    height: 1px;
+    background-color: #00b19e;
+    -webkit-transition: all .3s cubic-bezier(.175,.885,.32,1.075);
+    transition: all .3s cubic-bezier(.175,.885,.32,1.075);
+}
+a:hover:after {
+    width: 100%;
+}
+.menu-item-has-children a:hover:after,
+a.next:hover:after,
+a.prev:hover:after,
+a.custom-logo-link:hover:after,
+.site-title a:hover:after {
+    width: 0;
 }
