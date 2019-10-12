@@ -60,3 +60,34 @@ ul#breadcrumbs, #breadcrumbs li {
 .wpp-category a{
 	visibility: visible;
 }
+
+
+/*
+* Install fonts on this theme 
+*/
+@font-face {
+    font-family: 'functionpro_medium';
+    src:    url('assets/fonts/FuturaAgMiteOpti-Six.eot'); /* IE9 Compat Modes */
+    src:    url('assets/fonts/FuturaAgMiteOpti-Six.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+            url('assets/fonts/FuturaAgMiteOpti-Six.woff2') format('woff2'), /* Super Modern Browsers */
+            url('assets/fonts/FuturaAgMiteOpti-Six.woff') format('woff'); /* Pretty Modern Browsers */
+}
+
+@font-face {
+    font-family: 'functionpro_book';
+    src:    url('assets/fonts/Jivita.eot'); /* IE9 Compat Modes */
+    src:    url('assets/fonts/Jivita.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+            url('assets/fonts/Jivita.woff2') format('woff2'), /* Super Modern Browsers */
+            url('assets/fonts/Jivita.woff') format('woff'); /* Pretty Modern Browsers */
+}
+
+.wp-block-code, .wp-block-preformatted pre {
+    color: #bbb;
+}
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'functionpro_medium', "Helvetica Neue", helvetica, arial, sans-serif;
+}
+
+body, button, input, select, textarea {
+    font-family: 'functionpro_book', "Helvetica Neue", helvetica, arial, sans-serif;
+}
