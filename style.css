@@ -60,6 +60,7 @@ ul#breadcrumbs, #breadcrumbs li {
 .wpp-category a{
 	visibility: visible;
 }
+
 h2.widget-title {
     font-size: 12px;
 }
@@ -164,4 +165,25 @@ a.prev:hover:after,
 a.custom-logo-link:hover:after,
 .site-title a:hover:after {
     width: 0;
+}
+
+/*
+* If page we need to see it at full width and no floats
+*/
+body.page-two-column:not(.archive) #primary .entry-header,
+body.page-two-column:not(.archive) #primary .entry-content{
+	float:none;
+	width:100%;
+}
+.accordion .card-header button{
+	width:100%;
+	text-align:left;
+	text-decoration:none;
+}
+.accordion .card-header button:hover,
+.accordion .card-header button:focus{
+	background:transparent;
+}
+.accordion .card-header button h2{
+	margin-bottom:0;
 }
