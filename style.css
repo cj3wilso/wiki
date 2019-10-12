@@ -109,6 +109,7 @@ body, button, input, select, textarea {
 a {
     color: #00b19e;
     text-decoration: none;
+	position:relative;
 }
 a:hover {
     color: #00b19e !important;
