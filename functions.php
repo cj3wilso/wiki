@@ -5,83 +5,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+ 
+define( 'THEME_TEXTDOMAIN', 'wiki-textdomain' );
+define( 'INCLUDES_DIR', get_stylesheet_directory() . '/includes' );
 
-add_action( 'wp_enqueue_scripts', 'enqueue_styles' );
+require INCLUDES_DIR . '/admin.php';
+require INCLUDES_DIR . '/enqueue.php';
 
-function enqueue_styles() {
-	$version = '1.0.0';
-	if($_SERVER['HTTP_HOST']!="wiki.christinewilson.ca"){
-		$version = time();
-	}
-	// Register Bootstrap Script
-    wp_enqueue_script("bootstrap_js", "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js", array('jquery'), "4.3.1");
 
-    //Register Bootstrap Styles
-    wp_enqueue_style("bootstrap", "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css", "4.3.1");
-	
-	wp_enqueue_style( 'parent-style', get_template_directory_uri().'/style.css', array(), $version );
-	wp_enqueue_style('twentyseventeen-style', get_stylesheet_uri(), array(), $version);
-}
-
-define('INCLUDES_DIR', get_stylesheet_directory() . '/includes');
-
-//require INCLUDES_DIR . '/enqueue.php';
-//require INCLUDES_DIR . '/admin.php';
-
-add_action( 'set_object_terms', 'auto_set_parent_terms', 9999, 6 );
-
-/**
- * Automatically set/assign parent taxonomy terms to posts
- *
- * This function will automatically set parent taxonomy terms whenever terms are set on a post,
- * with the option to configure specific post types, and/or taxonomies.
- *
- *
- * @param int    $object_id  Object ID.
- * @param array  $terms      An array of object terms.
- * @param array  $tt_ids     An array of term taxonomy IDs.
- * @param string $taxonomy   Taxonomy slug.
- * @param bool   $append     Whether to append new terms to the old terms.
- * @param array  $old_tt_ids Old array of term taxonomy IDs.
- */
-function auto_set_parent_terms( $object_id, $terms, $tt_ids, $taxonomy, $append, $old_tt_ids ) {
-
-    /**
-     * We only want to move forward if there are taxonomies to set
-     */
-    if( empty( $tt_ids ) ) return FALSE;
-	
-	//Remove uncategorized when more than one category
-	if(count($tt_ids)>1){
-		$key = array_search(1, $tt_ids);
-		if($key){
-			wp_remove_object_terms( $object_id, array(1), $taxonomy );
-		}
-	}
-
-    /**
-     * Set specific post types to only set parents on.  Set $post_types = FALSE to set parents for ALL post types.
-     */
-    $post_types = array( 'post' );
-    if( $post_types !== FALSE && ! in_array( get_post_type( $object_id ), $post_types ) ) return FALSE;
-
-    /**
-     * Set specific post types to only set parents on.  Set $post_types = FALSE to set parents for ALL post types.
-     */
-    $tax_types = array( 'category' );
-    if( $tax_types !== FALSE && ! in_array( get_post_type( $object_id ), $post_types ) ) return FALSE;
-
-    foreach( $tt_ids as $tt_id ) {
-
-        $parent = wp_get_term_taxonomy_parent_id( $tt_id, $taxonomy );
-
-        if( $parent ) {
-            wp_set_post_terms( $object_id, array($parent), $taxonomy, TRUE );
-        }
-
-    }
-
-}
 
 
 /*=============================================
@@ -219,11 +150,15 @@ function add_cats_to_pages_definition()
 
 add_action('init', 'add_cats_to_pages_definition');
 
+
+/*
+ * Only get posts or pages that have categories that aren't uncategorized
+ */
 add_action('pre_get_posts', 'get_posts_and_pages');
 function get_posts_and_pages( $query ) {
 	
 	if (!is_admin() && $query->is_main_query()) {
-		//Only get posts or pages that have categories that aren't uncategorized
+		//Get all categories created
 		$term_ids = array_map(function($e) {
 			return is_object($e) ? $e->term_id : $e['term_id'];
 		}, get_categories());

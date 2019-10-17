@@ -1,0 +1,25 @@
+@import 'variables';
+@import 'mixins';
+@import 'typography';
+@import 'global';
+
+@import 'partials/header';
+@import 'partials/footer';
+
+/**
+ * other stuff
+
+@import 'partials/slider';
+@import 'partials/accordion';
+@import 'partials/tabs';
+@import 'partials/form-block';
+
+
+@import 'premiere-locates/content-block';
+@import 'premiere-locates/slider';
+@import 'premiere-locates/accordion';
+@import 'premiere-locates/tabs';
+@import 'premiere-locates/contact';
+@import 'premiere-locates/footer';
+@import 'premiere-locates/header';
+ */

@@ -1,0 +1,152 @@
+//Global IE specific styling can go in here
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+
+}
+
+
+
+
+
+//Other site-wide styling can go here
+
+body {
+    //Offset fixed header
+    padding-top:150px;
+    font-family:$montser;
+
+    a {
+        border-bottom:1px solid;
+        @include transition();
+
+            &:hover {
+                opacity:0.8;
+            }
+
+            &:focus {
+
+            }
+
+    }
+    @media (max-width:900px) {
+        padding-top:130px;
+    }
+
+    @media #{$break-medium-max} {
+        padding-top:107px;
+    }
+
+    @media #{$break-small-max} {
+        padding-top:100px;
+    }
+
+}
+
+/* Layout */
+
+#about {
+    padding-bottom:5rem !important;
+}
+
+.btn {
+    &.bg-offwhite {
+        &:hover, &:focus {
+            background:#e5e5e5 !important;
+        }
+    }
+}
+
+.bg-vert-grad {
+    background: rgb(229,119,37);
+    background: -moz-linear-gradient(0deg, rgba(229,119,37,1) 0%, rgba(244,168,21,1) 100%);
+    background: -webkit-linear-gradient(0deg, rgba(229,119,37,1) 0%, rgba(244,168,21,1) 100%);
+    background: linear-gradient(0deg, rgba(229,119,37,1) 0%, rgba(244,168,21,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#e57725",endColorstr="#f4a815",GradientType=1);
+}
+.bg-horiz-grad {
+    background: rgb(229,119,37);
+    background: -moz-linear-gradient(90deg, rgba(229,119,37,1) 0%, rgba(244,168,21,1) 100%);
+    background: -webkit-linear-gradient(90deg, rgba(229,119,37,1) 0%, rgba(244,168,21,1) 100%);
+    background: linear-gradient(90deg, rgba(229,119,37,1) 0%, rgba(244,168,21,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#e57725",endColorstr="#f4a815",GradientType=1);
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1170px;
+    }
+}
+@media #{$break-medium-max} {
+    .container {
+        max-width:100%;
+    }
+}
+
+
+.divider {
+    height:2px;
+    width:100%;
+    position:relative;
+    background: rgb(213,63,31);
+    background: linear-gradient(90deg, rgba(213,63,31,1) 0%, rgba(232,128,37,1) 50%, rgba(255,201,7,1) 100%);
+}
+ul {
+    list-style:none;
+    padding-left:0px;
+    li {
+        position:relative;
+        margin-bottom: 15px;
+        padding-left: 10px;
+        //width:50%;
+        //float:left;
+
+        &:before {
+            content: "•";
+            display: inline-block;
+            position: absolute;
+            left: 0px;
+        }
+
+
+
+    }
+}
+ol,
+ul {
+    li {
+        @include p-style();
+    }
+}
+
+/* Fonts */
+
+::placeholder {
+    color: #000;
+    opacity: 1;
+}
+
+:-ms-input-placeholder {
+    color: #000;
+}
+
+::-ms-input-placeholder {
+    color: #000;
+}
+
+.bold {
+    font-weight:700;
+}
+
+.btn {
+    @include normal-button();
+    @include flex-center();
+    display:inline-flex;
+}
+
+.section-title-intro {
+    text-align:center;
+
+        h3 {
+            margin-bottom:50px;
+        }
+
+}

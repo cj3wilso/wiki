@@ -1,0 +1,46 @@
+/*
+    This will set the base style for all type-sets
+ */
+
+h6, .h6 {
+    @include h6-style();
+}
+
+h5, .h5 {
+    @include h5-style();
+}
+
+h4, .h4 {
+    @include h4-style();
+}
+
+h3, .h3 {
+    @include h3-style();
+}
+
+h2, .h2 {
+    @include h2-style();
+}
+
+h1, .h1 {
+    @include h1-style();
+}
+
+p, .p {
+    @include p-style();
+}
+
+body a{
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: ease-in all 0.2s;
+
+    &:hover{
+        text-decoration: none;
+
+    }
+    &:focus{
+        text-decoration: none;
+        padding-bottom: 0;
+    }
+}
