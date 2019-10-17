@@ -1,0 +1,235 @@
+
+// Define font styles
+@mixin p-style() {
+
+    font-size:17px;
+    line-height:27px;
+    font-weight:400;
+
+        @media #{$break-medium-max} {
+            font-size:15px;
+            line-height:24px;
+        }
+
+}
+
+@mixin p-small-style() {
+    font-size:15px;
+    line-height:28px;
+}
+
+@mixin h6-style() {
+
+    font-size:28px;
+    line-height:43px;
+    font-weight:600;
+
+        @media #{$break-medium-max} {
+            font-size:20px;
+            line-height:34px;
+        }
+
+}
+
+@mixin h5-style() {
+
+    font-size:24px;
+    line-height:34px;
+    font-weight:300;
+
+        @media #{$break-medium-max} {
+            font-size:18px;
+            line-height:28px;
+        }
+
+}
+
+@mixin h4-style() {
+
+    font-size:18px;
+    line-height:25px;
+    font-weight:400;
+    letter-spacing:2px;
+    text-transform:uppercase;
+
+        @media #{$break-medium-max} {
+            font-size:16px;
+            line-height:21px;
+        }
+
+}
+
+@mixin h3-style() {
+
+    font-size:23px;
+    line-height:36px;
+    font-weight:700;
+    text-transform:uppercase;
+
+        @media #{$break-medium-max} {
+            font-size:18px;
+            line-height: 30px;
+        }
+
+}
+
+@mixin h2-style() {
+
+    font-size:35px;
+    line-height:50px;
+    font-weight:400;
+    text-transform:uppercase;
+
+        @media #{$break-medium-max} {
+            font-size:28px;
+            line-height: 42px;
+        }
+
+}
+
+@mixin h1-style() {
+
+    font-size:60px;
+    line-height:92px;
+    font-weight:700;
+    text-transform:uppercase;
+
+        @media #{$break-medium-max} {
+            font-size:48px;
+            line-height: 75px;
+        }
+
+}
+
+
+//Button Styling
+@mixin normal-button() {
+
+    border-radius:0px;
+    -webkit-border-radius:0px;
+    box-shadow:0px 7px 10px rgba(0,0,0,0.25);
+    -webkit-box-shadow:0px 7px 10px rgba(0,0,0,0.25);
+    padding:15px 26px;
+    font-weight:700;
+    border:none;
+    font-size:19px;
+    @include transition();
+
+        span {
+            &.arrow-wrap {
+                padding-left:20px;
+
+                @media #{$break-medium-max} {
+                    padding-left:15px;
+                }
+
+                svg {
+                    &#arrow-icon {
+                        width:24px;
+                        height:16px;
+
+                        @media #{$break-small-max} {
+                            width:20px;
+                            height:15px;
+                        }
+                    }
+
+                }
+            }
+
+        }
+
+    &:hover, &:focus {
+        padding-bottom:15px;
+        background:#e5e5e5;
+
+        box-shadow:0px 0px 7px rgba(0,0,0,0.25);
+        -webkit-box-shadow:0px 0px 7px rgba(0,0,0,0.25);
+        opacity:1;
+    }
+
+    @media #{$break-medium-max} {
+        padding:12px 15px;
+        font-size:16px;
+    }
+
+    @media #{$break-small-max} {
+        font-size:14px;
+    }
+
+}
+
+@mixin orange-button() {
+
+}
+
+@mixin inverted-button {
+    @include normal-button();
+
+}
+
+@mixin scale() {
+    transform:scale(1.02);
+    -webkit-transform:scale(1.02);
+}
+
+@mixin transition() {
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    -ms-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+
+//Link Styling
+@mixin text-link {
+
+}
+@mixin inline-link{
+
+}
+
+//Standard background image nonsense
+@mixin bg-image-mixin() {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+@mixin bg-image-mixin-contain() {
+    @include bg-image-mixin();
+    background-size: contain;
+}
+
+//Center things with FLEX
+@mixin flex-center() {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+
+    //display: -ms-flexbox;
+    //-ms-justify-content: center;
+    //-ms-align-items: center;
+    //-ms-align-content: center;
+}
+
+@mixin horizontal-gradient() {
+    background: rgb(229,119,37);
+    background: -moz-linear-gradient(90deg, rgba(229,119,37,1) 0%, rgba(244,168,21,1) 100%);
+    background: -webkit-linear-gradient(90deg, rgba(229,119,37,1) 0%, rgba(244,168,21,1) 100%);
+    background: linear-gradient(90deg, rgba(229,119,37,1) 0%, rgba(244,168,21,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#e57725",endColorstr="#f4a815",GradientType=1);
+}
+
+@mixin vertical-gradient() {
+    background: rgb(229,119,37);
+    background: -moz-linear-gradient(0deg, rgba(229,119,37,1) 0%, rgba(244,168,21,1) 100%);
+    background: -webkit-linear-gradient(0deg, rgba(229,119,37,1) 0%, rgba(244,168,21,1) 100%);
+    background: linear-gradient(0deg, rgba(229,119,37,1) 0%, rgba(244,168,21,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#e57725",endColorstr="#f4a815",GradientType=1);
+}
+
+
+
+
+
