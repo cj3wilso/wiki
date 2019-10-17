@@ -1,0 +1,18 @@
+/* ~~~~~~~~ */
+/*  Widgets  */
+/* ~~~~~~~~ */
+
+/*
+* Only needed if Wordpress Popular Posts Widget with categories showing set
+*/
+.wpp-category{
+	visibility: hidden;
+    margin-left: -34px;
+}
+.wpp-category a{
+	visibility: visible;
+}
+
+h2.widget-title {
+    font-size: 12px;
+}

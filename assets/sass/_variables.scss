@@ -1,9 +1,24 @@
 /* Fonts */
-@import url('https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i,800&display=swap');
-$montser : 'Montserrat', sans-serif;
+/*
+* Install fonts on this theme 
+*/
+@font-face {
+    font-family: 'functionpro_medium';
+    src:    url('assets/fonts/FuturaAgMiteOpti-Six.eot'); /* IE9 Compat Modes */
+    src:    url('assets/fonts/FuturaAgMiteOpti-Six.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+            url('assets/fonts/FuturaAgMiteOpti-Six.woff2') format('woff2'), /* Super Modern Browsers */
+            url('assets/fonts/FuturaAgMiteOpti-Six.woff') format('woff'); /* Pretty Modern Browsers */
+}
 
-@import url("https://use.typekit.net/yip8hkh.css");
-$neuzeit : neuzeit-grotesk, sans-serif;
+@font-face {
+    font-family: 'functionpro_book';
+    src:    url('assets/fonts/Function-Book.eot'); /* IE9 Compat Modes */
+    src:    url('assets/fonts/Function-Book.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+            url('assets/fonts/Function-Book.woff2') format('woff2'), /* Super Modern Browsers */
+            url('assets/fonts/Function-Book.woff') format('woff'); /* Pretty Modern Browsers */
+}
+$functionpro_medium : 'functionpro_medium', "Helvetica Neue", helvetica, arial, sans-serif;
+$functionpro_book : 'functionpro_book', "Helvetica Neue", helvetica, arial, sans-serif;
 
 /* Min Widths */
 $break-xxxlarge: "(min-width: 1600px)";
@@ -22,77 +37,9 @@ $break-medium-max: "(max-width: 767px)";
 $break-small-max: "(max-width: 575px)";
 $break-xsmall-max: "(max-width: 340px)";
 
-/* Colours */
-    /* Grey */
-    $color-black: #231f20;
-    $color-dark-grey: #403e41;
-    $color-light-grey: #f2f2f2;
-    $color-offwhite: #eff0ef;
-
-    /* Cold */
-        /* Blue */
-        $color-blue: #009dd7;
-
-        /* Teal */
-        $color-teal: #004b66;
-
-    /* Warm */
-        /* Red */
-        $color-red: #d53f1f;
-
-        /* Orange */
-        $color-orange: #e57725;
-
-        /* Yellow */
-        $color-yellow: #f4a815;
 
 
 
-    /* Gradients */
-    $vertical-gradient: linear-gradient(0deg, rgba(213,63,31,1) 0%, rgba(232,128,37,1) 50%, rgba(255,201,7,1) 100%);
-    $horizontal-gradient: linear-gradient(90deg, rgba(213,63,31,1) 0%, rgba(232,128,37,1) 50%, rgba(255,201,7,1) 100%);
-
-/* Random things */
-$right-width: 100px;
 
 
-/* Bootstrap Mixins */
-$theme-colors: ();
-$theme-colors: map-merge((
-    "primary":              $color-blue,
 
-    "black":                $color-black,
-    "grey":                 $color-dark-grey,
-    "lightgrey":            $color-light-grey,
-    "offwhite":             $color-offwhite,
-
-    "teal":                 $color-teal,
-    "red":                  $color-red,
-    "orange":               $color-orange,
-    "yellow":               $color-yellow,
-
-    "white":                #FFFFFF,
-
-
-), $theme-colors);
-
-@each $color, $value in $theme-colors {
-    .bg-#{$color} {
-        background: $value !important;
-    }
-    .text-#{$color} {
-        color: $value !important;
-    }
-    .border-#{$color} {
-        border-color: $value !important;
-    }
-    .btn-#{$color} {
-        background: $value !important;
-        &:hover {
-            background: lighten($color: $value, $amount: 10%) !important;
-        }
-    }
-    .fill-#{$color} {
-        fill:$value !important;
-    }
-}

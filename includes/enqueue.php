@@ -49,7 +49,8 @@ function wiki_scripts() {
     $style_dependencies    = [ 'bootstrap','font-awesome' ];
     $script_dependencies[] = 'jquery-serialize-json';
     $script_dependencies[] = 'underscore_js';
-
+	
+	wp_enqueue_style( 'parent-style', get_template_directory_uri().'/style.css', array(), $version );
     wp_enqueue_style( 'blank-template', get_stylesheet_directory_uri() . '/assets/css/style.css', $style_dependencies, $version );
     wp_enqueue_script( 'blank-template', get_stylesheet_directory_uri() . '/assets/js/script.js', $script_dependencies, $version, true );
 

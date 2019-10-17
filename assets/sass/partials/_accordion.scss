@@ -1,0 +1,20 @@
+/* ~~~~~~~~ */
+/*  Accordion  */
+/* ~~~~~~~~ */
+
+.accordion .card-header button{
+	width:100%;
+	text-align:left;
+	text-decoration:none;
+}
+.accordion .card-header button:hover,
+.accordion .card-header button:focus{
+	background:transparent;
+}
+.accordion .card-header button h2{
+	margin-bottom:0;
+}
+.accordion .card-body ul,
+.accordion .card-body ol{
+	padding-inline-start: 40px;
+}
