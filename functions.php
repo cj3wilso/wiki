@@ -20,6 +20,12 @@ function create_new_project(){
     //check_ajax_referer( 'ajax-login-nonce', 'security' );
 
     parse_str($_POST['form'], $form);
+	
+	
+	$a = shell_exec("mkdir /var/www/jjj 2>&1");
+	echo "mkdir:<br />";
+	echo $a;
+	echo "<br />----------------<br />";
 
 	/* exec("/csvexport.sh $table"); */
 
