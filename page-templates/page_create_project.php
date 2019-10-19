@@ -21,7 +21,7 @@ get_header();
 
 				?>
 				<h2>Create a New Project</h2>
-				<form class="create-new-project" method="post">
+				<form class="create-project" method="post">
 					<div class="row">
 						<div class="col-lg-12 form-group">
 							<label for="projectname">Name of Project *</label>
@@ -64,6 +64,29 @@ get_header();
 						</div>
 					</div>
 					-->
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="status"></div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12 form-group">
+							<button type="submit">Submit</button>
+						</div>
+					</div>
+				</form>
+				
+				
+				<h2>Delete a Project</h2>
+				<form class="delete-project" method="post">
+					<div class="row">
+						<div class="col-lg-12 form-group">
+							<label for="projectname">Name of Project *</label>
+							<input id="projectname" name="projectname" class="form-control" type="text" required="required"
+							pattern="^[a-zA-Z\s]+$"
+							data-bv-regexp-message="The project name can consist of alphabetical characters and spaces only">
+						</div>
+					</div>
 					<div class="row">
 						<div class="col-lg-12">
 							<div class="status"></div>

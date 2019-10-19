@@ -13,9 +13,8 @@ require INCLUDES_DIR . '/admin.php';
 require INCLUDES_DIR . '/enqueue.php';
 
 
-add_action('wp_ajax_create_new_project', 'create_new_project');
-add_action('wp_ajax_nopriv_create_new_project', 'create_new_project');
-function create_new_project(){
+add_action('wp_ajax_create_project', 'create_project');
+function create_project(){
 	// First check the nonce, if it fails the function will break
     //check_ajax_referer( 'ajax-login-nonce', 'security' );
 
@@ -43,6 +42,38 @@ function create_new_project(){
 	
 	
 	echo json_encode(array('message'=>__("You've successfully create a new project named: ").$form["projectname"]));
+    die();
+}
+
+add_action('wp_ajax_delete_project', 'delete_project');
+function delete_project(){
+	// First check the nonce, if it fails the function will break
+    //check_ajax_referer( 'ajax-login-nonce', 'security' );
+
+    parse_str($_POST['form'], $form);
+
+	/* double quote here because you want PHP to expand $form["projectname"] */
+	/* Escape double quotes so they are passed to the shell because you do not want the shell to choke on spaces */
+	$projectname = str_replace(" ", "-", strtolower(trim($form["projectname"])));
+	$command_with_parameters = "/var/www/project-delete.sh \"${projectname}\"";
+	$output = $return = "";
+
+	/* double quote here because you want PHP to expand $command_with_parameters, a string */
+	$exec = exec("${command_with_parameters}", $output, $return);
+	
+	if($return){
+		echo "Exec:<br />";
+		print_r( $exec );
+		echo "<br />----------------<br />";
+		echo "Output:<br />";
+		print_r( $output );
+		echo "<br />----------------<br />";
+		echo "Return:<br />";
+		print_r( $return );
+	}
+	
+	
+	echo json_encode(array('message'=>__("You've successfully deleted this project: ").$form["projectname"]));
     die();
 }
 
