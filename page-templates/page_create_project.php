@@ -18,9 +18,6 @@ get_header();
 				the_post();
 
 				get_template_part( 'template-parts/page/content', 'page' );
-				
-				$username = posix_getpwuid(posix_geteuid())['name'];
-				echo $username;
 
 				?>
 				<h2>Create a New Project</h2>
@@ -28,7 +25,9 @@ get_header();
 					<div class="row">
 						<div class="col-lg-12 form-group">
 							<label for="projectname">Name of Project *</label>
-							<input id="projectname" name="projectname" class="form-control" type="text" required="required">
+							<input id="projectname" name="projectname" class="form-control" type="text" required="required"
+							pattern="^[a-zA-Z\s]+$"
+							data-bv-regexp-message="The project name can consist of alphabetical characters and spaces only">
 						</div>
 					</div>
 					<!--

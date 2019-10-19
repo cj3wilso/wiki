@@ -21,28 +21,23 @@ function create_new_project(){
 
     parse_str($_POST['form'], $form);
 
-	//$old_path = getcwd();
-	//chdir('/var/www/');
-	//$output = shell_exec('./project-create.sh '.$form["projectname"]);
-	//$output = shell_exec('bash /var/www/project-create.sh '.$form["projectname"]);
-	//bash /var/www/project-create.sh <your-project>
-	
-	
 	/* exec("/csvexport.sh $table"); */
 
 	/* double quote here because you want PHP to expand $table */
 	/* Escape double quotes so they are passed to the shell because you do not wnat the shell to choke on spaces */
-	$projectname = $form["projectname"];
+	$projectname = str_replace(" ", "-", strtolower(trim($form["projectname"])));
 	$command_with_parameters = "/var/www/project-create.sh \"${projectname}\"";
 	$output = $return = "";
 
 	/* double quote here because you want PHP to expand $command_with_parameters, a string */
 	$exec = exec("${command_with_parameters}", $output, $return);
-
+	echo "Exec:<br />";
 	echo $exec;
 	echo "<br />----------------<br />";
+	echo "Output:<br />";
 	print_r( $output );
 	echo "<br />----------------<br />";
+	echo "Return:<br />";
 	print_r( $return );
 	
 	
