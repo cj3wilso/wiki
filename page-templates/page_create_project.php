@@ -18,6 +18,9 @@ get_header();
 				the_post();
 
 				get_template_part( 'template-parts/page/content', 'page' );
+				
+				$username = posix_getpwuid(posix_geteuid())['name'];
+				echo $username;
 
 				?>
 				<h2>Create a New Project</h2>
