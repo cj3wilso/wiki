@@ -1,6 +1,6 @@
 (function($){
-	//Trouble Signing In Form
-    $('form.trouble-signing-in')
+	//Create New Project
+    $('form.create-new-project')
         .bootstrapValidator({
             // Only disabled elements are excluded
             // The invisible elements belonging to inactive tabs must be validated
@@ -26,49 +26,62 @@
 
             // Get the form instance
             var $form = $(e.target);
-
-            var interest_values = [];
-            $('form.trouble-signing-in [name="interests"]').each( function() {
-                if( $(this).is(':checked') ) {
-                    interest_values.push( $(this).val() );
-                }
-            });
-            var interests = interest_values.join(',');
-
+			var saveButton = $form.find('input[type="submit"]');
             var formSerialized = $form.serialize();
-            formSerialized = formSerialized + "&interests=" + interests;
 
-            // Get the BootstrapValidator instance
-            var bv = $form.data('bootstrapValidator');
+            saveButton.prop("disabled", true);
             $form.find('.status').removeClass('error-text');
             $form.find('.status').show().html(ajax_login_object.loadingmessage);
             $.ajax({
                 type: 'POST',
-                dataType: 'json',
+                dataType: 'html',
                 url: ajax_login_object.ajaxurl,
                 cache: false,
                 data: {
-                    'action': 'trouble_signing_in', //calls wp_ajax_nopriv_ajaxlogin
+                    'action': 'create_new_project', //calls wp_ajax_nopriv_ajaxlogin
                     'form': formSerialized,
                     'security': $('#security').val() },
                 success: function(data){
-                    console.log("Trouble signing in success function.. show data:");
+					saveButton.prop("disabled", false);
+					
+					console.log("Create New Project in success function.. show data:");
                     console.log(data);
-                    saveButton.prop("disabled", true);
-                    if (data.success == true){
-                        $(".row.contact-boxes .card.block.form:not(#main-message)").closest(".contact-boxes").remove();
-                        $form.find(".row.contact-boxes .card.block.form").html(data.message);
-                        $form.find('.status').html("");
-                    }else{
+					
+					//Evaluate JSON - if formatted correctly display usual messages
+					try {
+						data = JSON.parse(data);
+					} catch (e) {
+						//Data is not JSON
+						var origdata = data;
+						//Does data contain JSON?
+						var substr = data.match("{(.*)}");
+						//If contains JSON
+						if(substr){
+							//Parse JSON to get values
+							jsontext = "{"+substr[1]+"}";
+							data = JSON.parse(jsontext);
+							//Get the extra text and set as message so we know what PHP is writing
+							var extratext = origdata.replace(jsontext, "");
+							data.message = extratext;
+						}else{
+							//If doesn't contain JSON
+							//Set the server response as the message
+							var message = data;
+							var data = new Object();
+							data.message = message;
+						 }
+					 }
+                    
+                    if (data.success != true){
                         $form.find('.status').addClass('error-text');
-                        $form.find('.status').html(data.message);
                     }
-                    $('html').animate({scrollTop: 0, scrollLeft: 0},300);
+					$form.find('.status').html(data.message);
                 },
                 error: function(xhr, ajaxOptions, thrownError){
-                    $form.find('.status').addClass('error-text');
+					saveButton.prop("disabled", false);
+					$form.find('.status').addClass('error-text');
                     $form.find('.status').html(xhr.status+' '+thrownError);
-                    console.log("Trouble signing in error function.. show error:");
+                    console.log("Create New Project in error function.. show error:");
                     console.log(xhr.status);
                     console.log(thrownError);
                     console.log(ajaxOptions);

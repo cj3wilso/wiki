@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Ben
- * Date: 2019-06-03
- * Time: 10:34
- */
 
 /**
  * Versions
@@ -18,26 +12,18 @@ if($_SERVER['HTTP_HOST']!="wiki.christinewilson.ca"){
 add_action( 'wp_enqueue_scripts', 'wiki_scripts' );
 add_action( 'wp_footer', 'wiki_localize' );
 
-//add_action( 'wp_enqueue_scripts', 'enqueue_styles' );
-
-function enqueue_styles() {
-	$version = '1.0.0';
-	
-	// Register Bootstrap Script
-    wp_enqueue_script("bootstrap_js", "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js", array('jquery'), "4.3.1");
-
-    //Register Bootstrap Styles
-    wp_enqueue_style("bootstrap", "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css", "4.3.1");
-	
-	wp_enqueue_style( 'parent-style', get_template_directory_uri().'/style.css', array(), $version );
-	wp_enqueue_style('twentyseventeen-style', get_stylesheet_uri(), array(), $version);
-}
-
 /**
  * Enqueue and register theme scripts.
  */
 function wiki_scripts() {
     global $version;
+	
+	wp_localize_script( 'jquery', 'ajax_login_object', array(
+        'ajaxurl' => admin_url( 'admin-ajax.php' ),
+        'redirecturl' => get_permalink(),
+        'adminurl' => admin_url(),
+        'loadingmessage' => __('Sending info, please wait...')
+    ));
 
     // Dependency Management.
     wp_register_script( "jquery-serialize-json", get_stylesheet_directory_uri() . "/assets/js/jquery.serializejson.min.js", [ "jquery" ], "2.8.1", true );
@@ -49,6 +35,8 @@ function wiki_scripts() {
     $style_dependencies    = [ 'bootstrap','font-awesome' ];
     $script_dependencies[] = 'jquery-serialize-json';
     $script_dependencies[] = 'underscore_js';
+	
+	wp_enqueue_script('bootstrap-validator', get_stylesheet_directory_uri() . '/assets/js/bootstrapValidator.min.js', array('bootstrap_js'),'', true);
 	
 	wp_enqueue_style( 'parent-style', get_template_directory_uri().'/style.css', array(), $version );
     wp_enqueue_style( 'blank-template', get_stylesheet_directory_uri() . '/assets/css/style.css', $style_dependencies, $version );
@@ -62,6 +50,5 @@ function wiki_scripts() {
  * Localize, yo.
  */
 function wiki_localize(){
-
     return;
 }
