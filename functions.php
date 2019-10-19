@@ -22,10 +22,10 @@ function create_new_project(){
     parse_str($_POST['form'], $form);
 	
 	
-	$a = shell_exec("mkdir /var/www/jjj 2>&1");
-	echo "mkdir:<br />";
-	echo $a;
-	echo "<br />----------------<br />";
+	//$a = shell_exec("mkdir /var/www/jjj 2>&1");
+	//echo "mkdir:<br />";
+	//echo $a;
+	//echo "<br />----------------<br />";
 
 	/* exec("/csvexport.sh $table"); */
 
