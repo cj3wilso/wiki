@@ -34,16 +34,16 @@ function create_new_project(){
 	/* Escape double quotes so they are passed to the shell because you do not wnat the shell to choke on spaces */
 	$projectname = $form["projectname"];
 	$command_with_parameters = "/var/www/project-create.sh \"${projectname}\"";
-	$output_from_command = "";
-	$command_success = "";
+	$output = $return = "";
 
 	/* double quote here because you want PHP to expand $command_with_parameters, a string */
-	exec("${command_with_parameters}", $output_from_command, $command_success);
+	$exec = exec("${command_with_parameters}", $output, $return);
 
-
-	/* show me what you got */
-	print_r("${command_success}");
-	print_r("${output_from_command}");
+	echo $exec;
+	echo "<br />----------------<br />";
+	print_r( $output );
+	echo "<br />----------------<br />";
+	print_r( $return );
 	
 	
 	//chdir($old_path);
