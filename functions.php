@@ -42,7 +42,8 @@ function create_new_project(){
 
 
 	/* show me what you got */
-	echo"${command_success}\n${output_from_command}\n";
+	print_r("${command_success}");
+	print_r("${output_from_command}");
 	
 	
 	//chdir($old_path);
