@@ -22,11 +22,6 @@ get_header();
 				?>
 				<h2>Create a New Project</h2>
 				<form class="create-new-project" method="post">
-					<div class="row status-top">
-						<div class="col-lg-12">
-							<div class="status"></div>
-						</div>
-					</div>
 					<div class="row">
 						<div class="col-lg-12 form-group">
 							<label for="projectname">Name of Project *</label>
@@ -67,6 +62,11 @@ get_header();
 						</div>
 					</div>
 					-->
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="status"></div>
+						</div>
+					</div>
 					<div class="row">
 						<div class="col-lg-12 form-group">
 							<button type="submit">Submit</button>

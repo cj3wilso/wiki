@@ -13,6 +13,25 @@ require INCLUDES_DIR . '/admin.php';
 require INCLUDES_DIR . '/enqueue.php';
 
 
+add_action('wp_ajax_create_new_project', 'create_new_project');
+add_action('wp_ajax_nopriv_create_new_project', 'create_new_project');
+function create_new_project(){
+	// First check the nonce, if it fails the function will break
+    //check_ajax_referer( 'ajax-login-nonce', 'security' );
+
+    parse_str($_POST['form'], $form);
+
+	$old_path = getcwd();
+	chdir('/var/www/');
+	$output = shell_exec('./project-create.sh '.$form["projectname"]);
+	//bash /var/www/project-create.sh <your-project>
+	chdir($old_path);
+	
+	echo json_encode(array('message'=>__("next part You've successfully create a new project named: ").$form["projectname"]));
+    die();
+}
+
+
 
 
 /*=============================================
