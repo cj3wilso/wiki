@@ -32,7 +32,7 @@ function create_new_project(){
 	/* double quote here because you want PHP to expand $command_with_parameters, a string */
 	$exec = exec("${command_with_parameters}", $output, $return);
 	echo "Exec:<br />";
-	echo $exec;
+	print_r( $exec );
 	echo "<br />----------------<br />";
 	echo "Output:<br />";
 	print_r( $output );
