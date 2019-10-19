@@ -47,7 +47,7 @@ function create_new_project(){
 	
 	//chdir($old_path);
 	
-	echo json_encode(array('message'=>__("next part You've successfully create a new project named: ").$form["projectname"]));
+	//echo json_encode(array('message'=>__("next part You've successfully create a new project named: ").$form["projectname"]));
     die();
 }
 
