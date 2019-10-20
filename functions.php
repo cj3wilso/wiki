@@ -75,7 +75,7 @@ function delete_project(){
 	foreach ($projects as $project) {
 		/* double quote here because you want PHP to expand $form["projectname"] */
 		/* Escape double quotes so they are passed to the shell because you do not want the shell to choke on spaces */
-		$projectname = str_replace(" ", "-", strtolower(trim($form["projectname"])));
+		$projectname = str_replace(" ", "-", strtolower(trim($project)));
 		$command_with_parameters = "/var/www/project-delete.sh \"${projectname}\"";
 		$output = $return = "";
 
@@ -96,7 +96,7 @@ function delete_project(){
 		}
 	
 	}
-	echo json_encode(array('message'=>__("You've successfully deleted this project: ").$form["projectname"]));
+	echo json_encode(array('message'=>__("You've successfully deleted project(s): ").$form["projectname"]));
     die();
 }
 
