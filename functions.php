@@ -81,7 +81,7 @@ function create_project(){
 		
 		$exec = exec("${command_with_parameters}", $output, $return);
 		
-		if($return){
+		//if($return){
 			echo "SITE ADD:<br /><br />";
 			echo "Exec:<br />";
 			print_r( $exec );
@@ -91,8 +91,8 @@ function create_project(){
 			echo "<br />----------------<br />";
 			echo "Return:<br />";
 			print_r( $return );
-			die();
-		}
+			//die();
+		//}
 		
 	}
 	
