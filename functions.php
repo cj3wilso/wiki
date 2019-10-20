@@ -70,7 +70,7 @@ function create_project(){
 		/*
 		* CREATING SUBDOMAIN 
 		*/
-		$command_with_parameters = "/var/www/sites-available.sh \"${projectname}\"";
+		$command_with_parameters = "/var/www/site-add.sh \"${projectname}\"";
 		$output = $return = "";
 		
 		$exec = exec("${command_with_parameters}", $output, $return);
@@ -154,6 +154,26 @@ function delete_project(){
 					print_r( $return );
 					die();
 				}
+				
+				/*
+				* REMOVE SUBDOMAIN 
+				*/
+				$command_with_parameters = "/var/www/site-remove.sh \"${projectname}\"";
+				$output = $return = "";
+				
+				$exec = exec("${command_with_parameters}", $output, $return);
+				
+				//if($return){
+					echo "Exec:<br />";
+					print_r( $exec );
+					echo "<br />----------------<br />";
+					echo "Output:<br />";
+					print_r( $output );
+					echo "<br />----------------<br />";
+					echo "Return:<br />";
+					print_r( $return );
+					die();
+				//}
 			}
 		}
 	}
