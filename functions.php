@@ -139,7 +139,7 @@ function delete_project(){
 				}
 				/* double quote here because you want PHP to expand $form["projectname"] */
 				/* Escape double quotes so they are passed to the shell because you do not want the shell to choke on spaces */
-				$command_with_parameters = "/var/www/project-delete.sh \"${projectname}\" \"${projecturl}\"";
+				$command_with_parameters = "/var/www/project-delete.sh \"${projecturl}\"";
 				$output = $return = "";
 
 				/* double quote here because you want PHP to expand $command_with_parameters, a string */
@@ -161,7 +161,7 @@ function delete_project(){
 				/*
 				* REMOVE SUBDOMAIN 
 				*/
-				$command_with_parameters = "/var/www/site-remove.sh \"${projectname}\"";
+				$command_with_parameters = "/var/www/site-remove.sh \"${projecturl}\"";
 				$output = $return = "";
 				
 				$exec = exec("${command_with_parameters}", $output, $return);
