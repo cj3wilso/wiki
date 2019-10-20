@@ -32,10 +32,10 @@ function create_project(){
 	
 	//Create an array to loop through different site stages
 	$projects = array();
-	$projects[] = "main";
 	if($form["staging"]=="on"){
 		$projects[] = "staging";
 	}
+	$projects[] = "main";
 	
 	$gitremote = $html_url = "";
 	$siteurl = "http://".$projectname.".christinewilson.ca";
