@@ -98,10 +98,6 @@ function create_project(){
 			die();
 		}
 		sleep(0.5);
-		
-		//if($stage!="main"){
-		//	copy("/var/www/phpmyadmin/public_html/.htaccess", "/var/www/".$projectdir."/public_html/.htaccess");
-		//}
 	}
 	
 	
@@ -201,7 +197,7 @@ function delete_project(){
 					die();
 				}
 			}
-			sleep(1);
+			sleep(0.5);
 		}
 	}
 	echo json_encode(array('message'=>__("You've successfully deleted project(s): ").$form["projectname"]));
