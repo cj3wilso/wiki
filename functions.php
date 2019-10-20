@@ -31,21 +31,20 @@ function create_project(){
 	}
 	
 	//Create an array to loop through different site stages
-	$projects = array();
+	$stages = array();
 	if($form["staging"]=="on"){
-		$projects[] = "staging";
+		$stages[] = "staging";
 	}
-	$projects[] = "main";
+	$stages[] = "main";
 	
 	$gitremote = $html_url = "";
-	$siteurl = "http://".$projectname.".christinewilson.ca";
-	foreach ($projects as $project) {
-		$projecturl = $projectname;
-		$projectdir = $projectname;
-		if($project!="main"){
-			$projecturl = $projectname.$project;
-			$siteurl = "http://".$projecturl.".christinewilson.ca";
-			$projectdir = $projectname."_".$project;
+	foreach ($stages as $stage) {
+		if($stage=="main"){
+			$projectdir = $projecturl = $projectname;
+			$siteurl = "http://".$projectname.".christinewilson.ca";
+		}else{
+			$projectdir = $projecturl = $projectname.$stage;
+			$siteurl = "http://".$projecturl.".christinewilson.ca";	
 		}
 		$html_url .= "<li><a href='$siteurl' target='_blank'>$siteurl</a></li>";
 		$gitremote .= "<pre>git remote add deploy ssh://christine@35.192.41.230/var/git/".$projectdir.".git/</pre><br>";
