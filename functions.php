@@ -104,7 +104,7 @@ function delete_project(){
 			if (strpos($checkproject, $project."_") !== false || $checkproject == $project) {
 				
 				if (strpos($checkproject, "_") !== false) {
-					$stage = substr($project, strrpos($project, '/' )+1); 
+					$stage = substr($checkproject, strrpos($checkproject, '_' )+1); 
 					$project = $project."_".$stage;
 					echo $project;
 					die();
