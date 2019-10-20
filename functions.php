@@ -103,8 +103,8 @@ function delete_project(){
 			//Or that it matches completely
 			if (strpos($checkproject, $project."_") !== false || $checkproject == $project) {
 				
-				if (($pos = strpos($project, "_")) !== FALSE) { 
-					$stage = substr($project, $pos+1); 
+				if (strpos($checkproject, "_") !== false) {
+					$stage = substr($project, strrpos($project, '/' )+1); 
 					$project = $project."_".$stage;
 					echo $project;
 					die();
