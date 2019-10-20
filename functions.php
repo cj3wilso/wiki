@@ -43,7 +43,7 @@ function create_project(){
 		$projecturl = $projectname;
 		if($project!="main"){
 			$projecturl = $projectname."-".$project;
-			$siteurl = "http://".$project."-".$projectname.".christinewilson.ca";
+			$siteurl = "http://".$projecturl.".christinewilson.ca";
 			$projectname = $projectname."_".$project;
 		}
 		$html_url .= "<li><a href='$siteurl' target='_blank'>$siteurl</a></li>";
@@ -61,6 +61,7 @@ function create_project(){
 		$exec = exec("${command_with_parameters}", $output, $return);
 		
 		if($return){
+			echo "PROJECT CREATE:<br /><br />";
 			echo "Exec:<br />";
 			print_r( $exec );
 			echo "<br />----------------<br />";
@@ -81,6 +82,7 @@ function create_project(){
 		$exec = exec("${command_with_parameters}", $output, $return);
 		
 		if($return){
+			echo "SITE ADD:<br /><br />";
 			echo "Exec:<br />";
 			print_r( $exec );
 			echo "<br />----------------<br />";
@@ -155,6 +157,7 @@ function delete_project(){
 					
 				//If error print error and stop loop
 				if($return){
+					echo "PROJECT DELETE:<br /><br />";
 					echo "Exec:<br />";
 					print_r( $exec );
 					echo "<br />----------------<br />";
@@ -175,6 +178,7 @@ function delete_project(){
 				$exec = exec("${command_with_parameters}", $output, $return);
 				
 				if($return){
+					echo "SITE REMOVE:<br /><br />";
 					echo "Exec:<br />";
 					print_r( $exec );
 					echo "<br />----------------<br />";
