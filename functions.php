@@ -75,7 +75,7 @@ function create_project(){
 		
 		$exec = exec("${command_with_parameters}", $output, $return);
 		
-		//if($return){
+		if($return){
 			echo "Exec:<br />";
 			print_r( $exec );
 			echo "<br />----------------<br />";
@@ -85,7 +85,7 @@ function create_project(){
 			echo "Return:<br />";
 			print_r( $return );
 			die();
-		//}
+		}
 		
 	}
 	
@@ -163,7 +163,7 @@ function delete_project(){
 				
 				$exec = exec("${command_with_parameters}", $output, $return);
 				
-				//if($return){
+				if($return){
 					echo "Exec:<br />";
 					print_r( $exec );
 					echo "<br />----------------<br />";
@@ -173,7 +173,7 @@ function delete_project(){
 					echo "Return:<br />";
 					print_r( $return );
 					die();
-				//}
+				}
 			}
 		}
 	}
