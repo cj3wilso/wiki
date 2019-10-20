@@ -96,7 +96,7 @@ function create_project(){
 		sleep(1);
 		
 		if($stage!="main"){
-			copy("/var/www/phpmyadmin/public_html/.htaccess", "/var/www/".$projectdir."/public_html/.htaccess');
+			copy("/var/www/phpmyadmin/public_html/.htaccess", "/var/www/".$projectdir."/public_html/.htaccess");
 		}
 	}
 	
