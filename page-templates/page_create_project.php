@@ -95,10 +95,20 @@ get_header();
 									$projectname = ucwords(str_replace("-", " ", $project));
 									?>
 									<div class="form-check">
+										<?php 
+										if($project!="wiki"){
+										?>
 										<input type="checkbox" class="form-check-input" name="projectname" id="<?php echo $project; ?>" value="<?php echo $project; ?>" required="required">
 										<label class="form-check-label" for="<?php echo $project; ?>">
-										<?php echo $projectname; ?>
+										<?php 
+										}
+										echo $projectname; 
+										if($project!="wiki"){
+										?>
 										</label>
+										<?php 
+										}
+										?>
 									</div>
 									<?php
 								}
