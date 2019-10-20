@@ -43,6 +43,10 @@ function create_project(){
 			$projectname = $projectname."_".$project;
 		}
 		$gitremote .= "<pre>git remote add deploy ssh://christine@35.192.41.230/var/git/".$projectname.".git/</pre><br>";
+		
+		/*
+		* CREATING GIT PROJECT 
+		*/
 		/* double quote here because you want PHP to expand $form["projectname"] */
 		/* Escape double quotes so they are passed to the shell because you do not want the shell to choke on spaces */
 		$command_with_parameters = "/var/www/project-create.sh \"${projectname}\"";
@@ -60,7 +64,29 @@ function create_project(){
 			echo "<br />----------------<br />";
 			echo "Return:<br />";
 			print_r( $return );
+			die();
 		}
+		
+		/*
+		* CREATING SUBDOMAIN 
+		*/
+		$command_with_parameters = "/var/www/sites-available.sh \"${projectname}\"";
+		$output = $return = "";
+		
+		$exec = exec("${command_with_parameters}", $output, $return);
+		
+		if($return){
+			echo "Exec:<br />";
+			print_r( $exec );
+			echo "<br />----------------<br />";
+			echo "Output:<br />";
+			print_r( $output );
+			echo "<br />----------------<br />";
+			echo "Return:<br />";
+			print_r( $return );
+			die();
+		}
+		
 	}
 	
 	$headers = 'From: Wiki <'.get_option('admin_email').'>' . "\r\n";
