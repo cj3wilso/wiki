@@ -43,7 +43,7 @@ function create_project(){
 		$projecturl = $projectname;
 		if($project!="main"){
 			$projecturl = $projectname."-".$project;
-			$siteurl = "http://"$project."-".$projectname.".christinewilson.ca";
+			$siteurl = "http://".$project."-".$projectname.".christinewilson.ca";
 			$projectname = $projectname."_".$project;
 		}
 		$html_url .= "<li><a href='$siteurl' target='_blank'>$siteurl</a></li>";
