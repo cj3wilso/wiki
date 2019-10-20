@@ -36,6 +36,9 @@ function wiki_scripts() {
     $script_dependencies[] = 'jquery-serialize-json';
     $script_dependencies[] = 'underscore_js';
 	
+	wp_enqueue_style('bootstrap-toggle', 'https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css');
+	wp_enqueue_script('bootstrap-toggle_js', 'https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js', array('bootstrap_js'),'', true);
+	
 	wp_enqueue_script('bootstrap-validator', get_stylesheet_directory_uri() . '/assets/js/bootstrapValidator.min.js', array('bootstrap_js'),'', true);
 	
 	wp_enqueue_style( 'parent-style', get_template_directory_uri().'/style.css', array(), $version );
