@@ -39,8 +39,10 @@ function create_project(){
 	
 	$gitremote = "";
 	foreach ($projects as $project) {
+		$projecturl = $projectname;
 		if($project!="main"){
 			$projectname = $projectname."_".$project;
+			$projecturl = $projectname."-".$project;
 		}
 		$gitremote .= "<pre>git remote add deploy ssh://christine@35.192.41.230/var/git/".$projectname.".git/</pre><br>";
 		
@@ -70,7 +72,7 @@ function create_project(){
 		/*
 		* CREATING SUBDOMAIN 
 		*/
-		$command_with_parameters = "/var/www/site-add.sh \"${projectname}\"";
+		$command_with_parameters = "/var/www/site-add.sh \"${projectname}\" \"${projecturl}\"";
 		$output = $return = "";
 		
 		$exec = exec("${command_with_parameters}", $output, $return);
@@ -128,15 +130,16 @@ function delete_project(){
 			//Checking for underscore with project name which lets us know there is a staging site
 			//Or that it matches completely
 			if (strpos($checkproject, $project."_") !== false || $checkproject == $project) {
-				
+				$projectname = str_replace(" ", "-", strtolower(trim($project)));
+				$projecturl = $projectname;
 				if (strpos($checkproject, "_") !== false) {
 					$stage = substr($checkproject, strrpos($checkproject, '_' )+1); 
-					$project = $project."_".$stage;
+					$projectname = $projectname."_".$stage;
+					$projecturl = $projectname."-".$stage;
 				}
 				/* double quote here because you want PHP to expand $form["projectname"] */
 				/* Escape double quotes so they are passed to the shell because you do not want the shell to choke on spaces */
-				$projectname = str_replace(" ", "-", strtolower(trim($project)));
-				$command_with_parameters = "/var/www/project-delete.sh \"${projectname}\"";
+				$command_with_parameters = "/var/www/project-delete.sh \"${projectname}\" \"${projecturl}\"";
 				$output = $return = "";
 
 				/* double quote here because you want PHP to expand $command_with_parameters, a string */
