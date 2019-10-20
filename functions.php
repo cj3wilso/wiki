@@ -54,7 +54,7 @@ function create_project(){
 		*/
 		/* double quote here because you want PHP to expand $form["projectname"] */
 		/* Escape double quotes so they are passed to the shell because you do not want the shell to choke on spaces */
-		$command_with_parameters = "/var/www/project-create.sh \"${projectname}\"";
+		$command_with_parameters = "/var/www/project-create.sh \"${projecturl}\"";
 		$output = $return = "";
 
 		/* double quote here because you want PHP to expand $command_with_parameters, a string */
@@ -76,7 +76,7 @@ function create_project(){
 		/*
 		* CREATING SUBDOMAIN 
 		*/
-		$command_with_parameters = "/var/www/site-add.sh \"${projectname}\" \"${projecturl}\"";
+		$command_with_parameters = "/var/www/site-add.sh \"${projecturl}\" \"${projecturl}\"";
 		$output = $return = "";
 		
 		$exec = exec("${command_with_parameters}", $output, $return);
