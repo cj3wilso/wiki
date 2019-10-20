@@ -102,12 +102,21 @@ function delete_project(){
 			//Checking for underscore with project name which lets us know there is a staging site
 			//Or that it matches completely
 			if (strpos($checkproject, $project."_") !== false || $checkproject == $project) {
+				
+				if (($pos = strpos($project, "_")) !== FALSE) { 
+					$stage = substr($project, $pos+1); 
+					$project = $project."_".$stage;
+					echo $project;
+					die();
+				}
+				/*
 				if (strpos($checkproject, "_") !== false) {
 					$stage = substr($project, strpos($project, "_") + 1);   
 					$project = $project."_".$stage;
 					echo $project;
 					die();
 				}
+				*/
 				/* double quote here because you want PHP to expand $form["projectname"] */
 				/* Escape double quotes so they are passed to the shell because you do not want the shell to choke on spaces */
 				$projectname = str_replace(" ", "-", strtolower(trim($project)));
