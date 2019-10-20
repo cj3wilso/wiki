@@ -40,7 +40,7 @@ function create_project(){
 		print_r( $return );
 	}
 	
-	$headers = 'From: Wiki <info@christinewilson.ca>' . "\r\n";
+	$headers = 'From: Wiki <'.get_option('admin_email').'>' . "\r\n";
 	$headers .= "MIME-Version: 1.0\r\n";
 	$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 	$title = "Instructions to complete set up for project: ".$form["projectname"];
@@ -59,7 +59,7 @@ function create_project(){
 	echo "<h3>".$title."</h3>";
 	echo $body;
 	
-	wp_mail( "cj3wilso@gmail.com", $title, $email_message, $headers );
+	wp_mail( get_option('admin_email'), $title, $email_message, $headers );
 	
     die();
 }
@@ -99,7 +99,6 @@ function delete_project(){
 	echo json_encode(array('message'=>__("You've successfully deleted project(s): ").$form["projectname"]));
     die();
 }
-
 
 
 
