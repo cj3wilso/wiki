@@ -118,6 +118,20 @@
             var $form = $(e.target);
 			var saveButton = $form.find('input[type="submit"]');
             var formSerialized = $form.serialize();
+			
+			var project_values = [];
+            $form.find('[name="projectname"]').each( function() {
+                if( $(this).is(':checked') ) {
+                    project_values.push( $(this).val() );
+                }
+            });
+            var projects = project_values.join(',');
+
+            var formSerialized = $form.serialize();
+            formSerialized = formSerialized + "&projectname=" + projects;
+
+            console.log('formSerialized');
+            console.log(formSerialized);
 
             saveButton.prop("disabled", true);
             $form.find('.status').removeClass('error-text');

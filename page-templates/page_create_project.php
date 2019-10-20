@@ -71,20 +71,38 @@ get_header();
 					</div>
 					<div class="row">
 						<div class="col-lg-12 form-group">
-							<button type="submit">Submit</button>
+							<button type="submit">Create</button>
 						</div>
 					</div>
 				</form>
 				
 				
-				<h2>Delete a Project</h2>
+				<h2>Current Projects</h2>
 				<form class="delete-project" method="post">
 					<div class="row">
 						<div class="col-lg-12 form-group">
-							<label for="projectname">Name of Project *</label>
-							<input id="projectname" name="projectname" class="form-control" type="text" required="required"
-							pattern="^[a-zA-Z\s]+$"
-							data-bv-regexp-message="The project name can consist of alphabetical characters and spaces only">
+								<?php 
+								if($_SERVER['HTTP_HOST'] == "wiki.christinewilson.ca") {
+									$dir = "/var/env";
+								}else{
+									$dir = "D:\sites\wiki\wp-content";
+								}
+								$projects = scandir($dir);
+								foreach ($projects as $project) {
+									if($project=="." || $project==".."){
+										continue;
+									}
+									$projectname = ucwords(str_replace("-", " ", $project));
+									?>
+									<div class="form-check">
+										<input type="checkbox" class="form-check-input" name="projectname" id="<?php echo $project; ?>" value="<?php echo $project; ?>" required="required">
+										<label class="form-check-label" for="<?php echo $project; ?>">
+										<?php echo $projectname; ?>
+										</label>
+									</div>
+									<?php
+								}
+								?>
 						</div>
 					</div>
 					<div class="row">
@@ -94,12 +112,15 @@ get_header();
 					</div>
 					<div class="row">
 						<div class="col-lg-12 form-group">
-							<button type="submit">Submit</button>
+							<button type="submit">Delete</button>
 						</div>
 					</div>
 				</form>
 				
 				<?php
+				
+				
+print_r($a);
 
 			endwhile; // End of the loop.
 			?>
