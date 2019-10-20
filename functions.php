@@ -19,10 +19,20 @@ function create_project(){
     //check_ajax_referer( 'ajax-login-nonce', 'security' );
 
     parse_str($_POST['form'], $form);
+	
+	//Format Project Name for server
+	$projectname = str_replace(" ", "-", strtolower(trim($form["projectname"])));
+	
+	//Exit if user tries to create a project that already exists
+	$currentprojects = explode(',', $form["currentprojects"]);	
+	if (in_array($projectname, $currentprojects)){
+		echo "<p>This project name already exists! Please create a new one</p>";
+		die();
+	}
+	
 
 	/* double quote here because you want PHP to expand $form["projectname"] */
 	/* Escape double quotes so they are passed to the shell because you do not want the shell to choke on spaces */
-	$projectname = str_replace(" ", "-", strtolower(trim($form["projectname"])));
 	$command_with_parameters = "/var/www/project-create.sh \"${projectname}\"";
 	$output = $return = "";
 

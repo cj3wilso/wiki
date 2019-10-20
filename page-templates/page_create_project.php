@@ -7,6 +7,22 @@ Template Name: Create project
 ?>
 <?php
 get_header();
+
+/*
+* Important 
+* This part finds all current projects so we can delete them
+* And also not try to recreate if submitted as a new project
+*/
+if($_SERVER['HTTP_HOST'] == "wiki.christinewilson.ca") {
+	$dir = "/var/env";
+}else{
+	$dir = "D:\sites\wiki\wp-content";
+}
+$projects = scandir($dir);
+$key1 = array_search('.', $projects);
+$key2 = array_search('..', $projects);
+unset($projects[$key1]);
+unset($projects[$key2]);
 ?>
 
 <div class="wrap">
@@ -22,6 +38,7 @@ get_header();
 				?>
 				<h2>Create a New Project</h2>
 				<form class="create-project" method="post">
+					<input type="hidden" name="currentprojects" value="<?php echo implode(",",$projects); ?>">
 					<div class="row">
 						<div class="col-lg-12 form-group">
 							<label for="projectname">Name of Project *</label>
@@ -82,16 +99,7 @@ get_header();
 					<div class="row">
 						<div class="col-lg-12 form-group">
 								<?php 
-								if($_SERVER['HTTP_HOST'] == "wiki.christinewilson.ca") {
-									$dir = "/var/env";
-								}else{
-									$dir = "D:\sites\wiki\wp-content";
-								}
-								$projects = scandir($dir);
 								foreach ($projects as $project) {
-									if($project=="." || $project==".."){
-										continue;
-									}
 									$projectname = ucwords(str_replace("-", " ", $project));
 									?>
 									<div class="form-check">
@@ -126,10 +134,6 @@ get_header();
 				</form>
 				
 				<?php
-				
-				
-print_r($a);
-
 			endwhile; // End of the loop.
 			?>
 
