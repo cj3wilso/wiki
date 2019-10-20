@@ -25,7 +25,7 @@ foreach($projects as $k=>$project) {
 		unset($projects[$k]);
 		unset($projects_for_delete[$k]);
 	}
-	if(preg_match("/\b_staging\b/i", $project )){
+	if(strpos($project, "_") !== false){
 		unset($projects[$k]);
 	}
 }
