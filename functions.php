@@ -43,7 +43,8 @@ function create_project(){
 			$projectdir = $projecturl = $projectname;
 			$siteurl = "http://".$projectname.".christinewilson.ca";
 		}else{
-			$projectdir = $projecturl = $projectname.$stage;
+			$projectdir = $projectname."_".$stage;
+			$projecturl = $projectname."-".$stage;
 			$siteurl = "http://".$projecturl.".christinewilson.ca";	
 		}
 		$html_url .= "<li><a href='$siteurl' target='_blank'>$siteurl</a></li>";
@@ -53,7 +54,7 @@ function create_project(){
 		* CREATING GIT PROJECT 
 		*/
 		/* Escape double quotes so they are passed to the shell because you do not want the shell to choke on spaces */
-		$command_with_parameters = "/var/www/project-create.sh \"${projecturl}\"";
+		$command_with_parameters = "/var/www/project-create.sh \"${projectdir}\"";
 		$output = $return = "";
 
 		/* double quote here because you want PHP to expand $command_with_parameters, a string */
@@ -75,7 +76,7 @@ function create_project(){
 		/*
 		* CREATING SUBDOMAIN 
 		*/
-		$command_with_parameters = "/var/www/site-add.sh \"${projecturl}\" \"${projecturl}\"";
+		$command_with_parameters = "/var/www/site-add.sh \"${projectdir}\" \"${projecturl}\"";
 		$output = $return = "";
 		
 		$exec = exec("${command_with_parameters}", $output, $return);
@@ -94,6 +95,7 @@ function create_project(){
 		//}
 		
 	}
+	/*
 	echo "Restarting Apache...";
 	$exec = exec("sudo sh -c 'service apache2 reload'", $output, $return);
 	echo "APACHE RELOAD:<br /><br />";
@@ -105,6 +107,7 @@ function create_project(){
 			echo "<br />----------------<br />";
 			echo "Return:<br />";
 			print_r( $return );
+	*/
 	
 	
 	$headers = 'From: Wiki <'.get_option('admin_email').'>' . "\r\n";
@@ -152,15 +155,17 @@ function delete_project(){
 			//Or that it matches completely
 			if (strpos($checkproject, $project."_") !== false || $checkproject == $project) {
 				$projectname = str_replace(" ", "-", strtolower(trim($project)));
-				$projecturl = $projectname;
 				if (strpos($checkproject, "_") !== false) {
 					$stage = substr($checkproject, strrpos($checkproject, '_' )+1); 
 					$projecturl = $projectname."-".$stage;
-					$projectname = $projectname."_".$stage;
+					$projectdir = $projectname."_".$stage;
+				}else{
+					$projectdir = $projecturl = $projectname;
 				}
+				
 				/* double quote here because you want PHP to expand $form["projectname"] */
 				/* Escape double quotes so they are passed to the shell because you do not want the shell to choke on spaces */
-				$command_with_parameters = "/var/www/project-delete.sh \"${projecturl}\"";
+				$command_with_parameters = "/var/www/project-delete.sh \"${projectdir}\"";
 				$output = $return = "";
 
 				/* double quote here because you want PHP to expand $command_with_parameters, a string */
