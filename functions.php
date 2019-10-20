@@ -32,10 +32,10 @@ function create_project(){
 	
 	//Create an array to loop through different site stages
 	$stages = array();
+	$stages[] = "main";
 	if($form["staging"]=="on"){
 		$stages[] = "staging";
 	}
-	$stages[] = "main";
 	
 	$gitremote = $html_url = "";
 	foreach ($stages as $stage) {
@@ -81,7 +81,7 @@ function create_project(){
 		
 		$exec = exec("${command_with_parameters}", $output, $return);
 		
-		//if($return){
+		if($return){
 			echo "SITE ADD:<br /><br />";
 			echo "Exec:<br />";
 			print_r( $exec );
@@ -91,23 +91,10 @@ function create_project(){
 			echo "<br />----------------<br />";
 			echo "Return:<br />";
 			print_r( $return );
-			//die();
-		//}
-		
+			die();
+		}
+		sleep(1);
 	}
-	/*
-	echo "Restarting Apache...";
-	$exec = exec("sudo sh -c 'service apache2 reload'", $output, $return);
-	echo "APACHE RELOAD:<br /><br />";
-			echo "Exec:<br />";
-			print_r( $exec );
-			echo "<br />----------------<br />";
-			echo "Output:<br />";
-			print_r( $output );
-			echo "<br />----------------<br />";
-			echo "Return:<br />";
-			print_r( $return );
-	*/
 	
 	
 	$headers = 'From: Wiki <'.get_option('admin_email').'>' . "\r\n";
@@ -206,6 +193,7 @@ function delete_project(){
 					die();
 				}
 			}
+			sleep(1);
 		}
 	}
 	echo json_encode(array('message'=>__("You've successfully deleted project(s): ").$form["projectname"]));
