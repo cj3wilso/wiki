@@ -41,8 +41,8 @@ function create_project(){
 	foreach ($projects as $project) {
 		$projecturl = $projectname;
 		if($project!="main"){
-			$projectname = $projectname."_".$project;
 			$projecturl = $projectname."-".$project;
+			$projectname = $projectname."_".$project;
 		}
 		$gitremote .= "<pre>git remote add deploy ssh://christine@35.192.41.230/var/git/".$projectname.".git/</pre><br>";
 		
@@ -134,8 +134,8 @@ function delete_project(){
 				$projecturl = $projectname;
 				if (strpos($checkproject, "_") !== false) {
 					$stage = substr($checkproject, strrpos($checkproject, '_' )+1); 
-					$projectname = $projectname."_".$stage;
 					$projecturl = $projectname."-".$stage;
+					$projectname = $projectname."_".$stage;
 				}
 				/* double quote here because you want PHP to expand $form["projectname"] */
 				/* Escape double quotes so they are passed to the shell because you do not want the shell to choke on spaces */
@@ -146,7 +146,7 @@ function delete_project(){
 				$exec = exec("${command_with_parameters}", $output, $return);
 					
 				//If error print error and stop loop
-				if($return){
+				//if($return){
 					echo "Exec:<br />";
 					print_r( $exec );
 					echo "<br />----------------<br />";
@@ -155,8 +155,8 @@ function delete_project(){
 					echo "<br />----------------<br />";
 					echo "Return:<br />";
 					print_r( $return );
-					die();
-				}
+					//die();
+				//}
 				
 				/*
 				* REMOVE SUBDOMAIN 
@@ -166,7 +166,7 @@ function delete_project(){
 				
 				$exec = exec("${command_with_parameters}", $output, $return);
 				
-				if($return){
+				//if($return){
 					echo "Exec:<br />";
 					print_r( $exec );
 					echo "<br />----------------<br />";
@@ -175,8 +175,8 @@ function delete_project(){
 					echo "<br />----------------<br />";
 					echo "Return:<br />";
 					print_r( $return );
-					die();
-				}
+					//die();
+				//}
 			}
 		}
 	}
