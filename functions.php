@@ -37,13 +37,16 @@ function create_project(){
 		$projects[] = "staging";
 	}
 	
-	$gitremote = "";
+	$gitremote = $html_url = "";
+	$siteurl = "http://".$projectname.".christinewilson.ca";
 	foreach ($projects as $project) {
 		$projecturl = $projectname;
 		if($project!="main"){
 			$projecturl = $projectname."-".$project;
+			$siteurl = "http://"$project."-".$projectname.".christinewilson.ca";
 			$projectname = $projectname."_".$project;
 		}
+		$html_url .= "<li><a href='$siteurl' target='_blank'>$siteurl</a></li>";
 		$gitremote .= "<pre>git remote add deploy ssh://christine@35.192.41.230/var/git/".$projectname.".git/</pre><br>";
 		
 		/*
@@ -96,6 +99,11 @@ function create_project(){
 	$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 	$title = "Instructions to complete set up for project: ".$form["projectname"];
 	$body = "<ol>
+		<li>You're new website URL(s) are:
+			<ul>".
+				$html_url
+			."</ul>
+		</li>
 		<li>Add new Git remote to your Bitbucket repo (create a bitbucket repo if not created already)
 			<ul>
 				<li>Open terminal and paste this:<br>".
@@ -146,7 +154,7 @@ function delete_project(){
 				$exec = exec("${command_with_parameters}", $output, $return);
 					
 				//If error print error and stop loop
-				//if($return){
+				if($return){
 					echo "Exec:<br />";
 					print_r( $exec );
 					echo "<br />----------------<br />";
@@ -155,8 +163,8 @@ function delete_project(){
 					echo "<br />----------------<br />";
 					echo "Return:<br />";
 					print_r( $return );
-					//die();
-				//}
+					die();
+				}
 				
 				/*
 				* REMOVE SUBDOMAIN 
@@ -166,7 +174,7 @@ function delete_project(){
 				
 				$exec = exec("${command_with_parameters}", $output, $return);
 				
-				//if($return){
+				if($return){
 					echo "Exec:<br />";
 					print_r( $exec );
 					echo "<br />----------------<br />";
@@ -175,8 +183,8 @@ function delete_project(){
 					echo "<br />----------------<br />";
 					echo "Return:<br />";
 					print_r( $return );
-					//die();
-				//}
+					die();
+				}
 			}
 		}
 	}
