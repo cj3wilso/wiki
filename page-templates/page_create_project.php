@@ -99,15 +99,18 @@ get_header();
 										if($project!="wiki"){
 										?>
 										<input type="checkbox" class="form-check-input" name="projectname" id="<?php echo $project; ?>" value="<?php echo $project; ?>" required="required">
-										<label class="form-check-label" for="<?php echo $project; ?>">
+										
 										<?php 
 										}
+										?>
+										<label class="form-check-label" for="<?php echo $project; ?>">
+										<?php
 										echo $projectname; 
-										if($project!="wiki"){
+										//if($project!="wiki"){
 										?>
 										</label>
 										<?php 
-										}
+										//}
 										?>
 									</div>
 									<?php
