@@ -1,0 +1,26 @@
+/* ~~~~~~~~ */
+/*  Toggle  */
+/* ~~~~~~~~ */
+
+/*
+* Bootstrap earlier CSS has better toggle styles.. which they took away for some reason??
+*/
+
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open>.dropdown-toggle.btn-primary {
+    color: #fff;
+    background-color: #3071a9;
+    border-color: #285e8e;
+}
+
+.btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open>.dropdown-toggle.btn-default {
+    color: #333;
+    background-color: #e6e6e6;
+    border-color: #adadad;
+}
+
+.btn-default {
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+}

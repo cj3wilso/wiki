@@ -19,10 +19,16 @@ if($_SERVER['HTTP_HOST'] == "wiki.christinewilson.ca") {
 	$dir = "D:\sites\wiki\wp-content";
 }
 $projects = scandir($dir);
-$key1 = array_search('.', $projects);
-$key2 = array_search('..', $projects);
-unset($projects[$key1]);
-unset($projects[$key2]);
+$projects_for_delete = $projects;
+foreach($projects as $k=>$project) { 
+    if($project == '.' || $project == '..'){
+		unset($projects[$k]);
+		unset($projects_for_delete[$k]);
+	}
+	if(preg_match("/\b_staging\b/i", $project )){
+		unset($projects[$k]);
+	}
+}
 ?>
 
 <div class="wrap">
@@ -45,6 +51,23 @@ unset($projects[$key2]);
 							<input id="projectname" name="projectname" class="form-control" type="text" required="required"
 							pattern="^[a-zA-Z\s]+$"
 							data-bv-regexp-message="The project name can consist of alphabetical characters and spaces only">
+						</div>
+					</div>
+					<h3>Options</h3>
+					<div class="row form-group">
+						<div class="col-lg-3 ">
+							<label for="staging">Include Staging</label>
+						</div>
+						<div class="col-lg-9">
+							<input id="staging" name="staging" type="checkbox" data-toggle="toggle" data-on="Enabled" data-off="Disabled">
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-3 ">
+							<label for="wordpress">WordPress</label>
+						</div>
+						<div class="col-lg-9">
+							<input id="wordpress" name="wordpress" type="checkbox" data-toggle="toggle" data-on="Enabled" data-off="Disabled">
 						</div>
 					</div>
 					<!--
@@ -96,6 +119,7 @@ unset($projects[$key2]);
 				
 				<h2>Current Projects</h2>
 				<form class="delete-project" method="post">
+					<input type="text" name="currentprojects" value="<?php echo implode(",",$projects_for_delete); ?>">
 					<div class="row">
 						<div class="col-lg-12 form-group">
 								<?php 

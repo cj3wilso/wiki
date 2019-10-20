@@ -30,24 +30,37 @@ function create_project(){
 		die();
 	}
 	
-
-	/* double quote here because you want PHP to expand $form["projectname"] */
-	/* Escape double quotes so they are passed to the shell because you do not want the shell to choke on spaces */
-	$command_with_parameters = "/var/www/project-create.sh \"${projectname}\"";
-	$output = $return = "";
-
-	/* double quote here because you want PHP to expand $command_with_parameters, a string */
-	$exec = exec("${command_with_parameters}", $output, $return);
+	//Create an array to loop through different site stages
+	$projects = array();
+	$projects[] = "main";
+	if($form["staging"]=="on"){
+		$projects[] = "staging";
+	}
 	
-	if($return){
-		echo "Exec:<br />";
-		print_r( $exec );
-		echo "<br />----------------<br />";
-		echo "Output:<br />";
-		print_r( $output );
-		echo "<br />----------------<br />";
-		echo "Return:<br />";
-		print_r( $return );
+	$gitremote = "";
+	foreach ($projects as $project) {
+		if($project!="main"){
+			$projectname = $projectname."_".$project;
+		}
+		$gitremote .= "<pre>git remote add deploy ssh://christine@35.192.41.230/var/git/".$projectname.".git/</pre><br>";
+		/* double quote here because you want PHP to expand $form["projectname"] */
+		/* Escape double quotes so they are passed to the shell because you do not want the shell to choke on spaces */
+		$command_with_parameters = "/var/www/project-create.sh \"${projectname}\"";
+		$output = $return = "";
+
+		/* double quote here because you want PHP to expand $command_with_parameters, a string */
+		$exec = exec("${command_with_parameters}", $output, $return);
+		
+		if($return){
+			echo "Exec:<br />";
+			print_r( $exec );
+			echo "<br />----------------<br />";
+			echo "Output:<br />";
+			print_r( $output );
+			echo "<br />----------------<br />";
+			echo "Return:<br />";
+			print_r( $return );
+		}
 	}
 	
 	$headers = 'From: Wiki <'.get_option('admin_email').'>' . "\r\n";
@@ -57,8 +70,9 @@ function create_project(){
 	$body = "<ol>
 		<li>Add new Git remote to your Bitbucket repo (create a bitbucket repo if not created already)
 			<ul>
-				<li>Open terminal and paste this:<br>
-				<pre>git remote add deploy ssh://christine@35.192.41.230/var/git/".$projectname.".git/</pre></li>
+				<li>Open terminal and paste this:<br>".
+				$gitremote
+				."</li>
 				<li>Either deploy current files, or add a test file to see that it moves to server</li>
 			</ul>
 		</li>
@@ -83,33 +97,42 @@ function delete_project(){
 	
 	$projects = explode(',', $form["projectname"]);
 	foreach ($projects as $project) {
-		/* double quote here because you want PHP to expand $form["projectname"] */
-		/* Escape double quotes so they are passed to the shell because you do not want the shell to choke on spaces */
-		$projectname = str_replace(" ", "-", strtolower(trim($project)));
-		$command_with_parameters = "/var/www/project-delete.sh \"${projectname}\"";
-		$output = $return = "";
+		$currentprojects = explode(',', $form["currentprojects"]);
+		foreach ($currentprojects as $checkproject) {
+			//Checking for underscore with project name which lets us know there is a staging site
+			//Or that it matches completely
+			if (strpos($checkproject, $project."_") !== false || $checkproject == $project) {
+				if (strpos($checkproject, "_") !== false) {
+					$stage = substr($project, strpos($project, "_") + 1);   
+					$project = $project."_".$stage;
+				}
+				/* double quote here because you want PHP to expand $form["projectname"] */
+				/* Escape double quotes so they are passed to the shell because you do not want the shell to choke on spaces */
+				$projectname = str_replace(" ", "-", strtolower(trim($project)));
+				$command_with_parameters = "/var/www/project-delete.sh \"${projectname}\"";
+				$output = $return = "";
 
-		/* double quote here because you want PHP to expand $command_with_parameters, a string */
-		$exec = exec("${command_with_parameters}", $output, $return);
-		
-		//If error print error and stop loop
-		if($return){
-			echo "Exec:<br />";
-			print_r( $exec );
-			echo "<br />----------------<br />";
-			echo "Output:<br />";
-			print_r( $output );
-			echo "<br />----------------<br />";
-			echo "Return:<br />";
-			print_r( $return );
-			die();
+				/* double quote here because you want PHP to expand $command_with_parameters, a string */
+				$exec = exec("${command_with_parameters}", $output, $return);
+					
+				//If error print error and stop loop
+				if($return){
+					echo "Exec:<br />";
+					print_r( $exec );
+					echo "<br />----------------<br />";
+					echo "Output:<br />";
+					print_r( $output );
+					echo "<br />----------------<br />";
+					echo "Return:<br />";
+					print_r( $return );
+					die();
+				}
+			}
 		}
-	
 	}
 	echo json_encode(array('message'=>__("You've successfully deleted project(s): ").$form["projectname"]));
     die();
 }
-
 
 
 /*=============================================
