@@ -94,6 +94,18 @@ function create_project(){
 		//}
 		
 	}
+	echo "Restarting Apache...";
+	$exec = exec("sudo sh -c 'service apache2 reload'", $output, $return);
+	echo "APACHE RELOAD:<br /><br />";
+			echo "Exec:<br />";
+			print_r( $exec );
+			echo "<br />----------------<br />";
+			echo "Output:<br />";
+			print_r( $output );
+			echo "<br />----------------<br />";
+			echo "Return:<br />";
+			print_r( $return );
+	
 	
 	$headers = 'From: Wiki <'.get_option('admin_email').'>' . "\r\n";
 	$headers .= "MIME-Version: 1.0\r\n";
