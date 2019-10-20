@@ -48,14 +48,14 @@ function create_project(){
 		<li>Add new Git remote to your Bitbucket repo (create a bitbucket repo if not created already)
 			<ul>
 				<li>Open terminal and paste this:<br>
-				<pre>git remote add deploy ssh://christine@35.192.41.230/var/git/"$projectname.".git/</pre></li>
+				<pre>git remote add deploy ssh://christine@35.192.41.230/var/git/".$projectname.".git/</pre></li>
 				<li>Either deploy current files, or add a test file to see that it moves to server</li>
 			</ul>
 		</li>
 		</ol>";
 	$email_message = $title."<br>".$body;
 	
-	echo "<p>You've successfully create a new project named: ").$form["projectname"]."</p>";
+	echo "<p>You've successfully create a new project named: ".$form["projectname"]."</p>";
 	echo "<h3>".$title."</h3>";
 	echo $body;
 	
