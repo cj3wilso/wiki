@@ -119,7 +119,7 @@ foreach($projects as $k=>$project) {
 				
 				<h2>Current Projects</h2>
 				<form class="delete-project" method="post">
-					<input type="text" name="currentprojects" value="<?php echo implode(",",$projects_for_delete); ?>">
+					<input type="hidden" name="currentprojects" value="<?php echo implode(",",$projects_for_delete); ?>">
 					<div class="row">
 						<div class="col-lg-12 form-group">
 								<?php 
