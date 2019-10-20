@@ -76,7 +76,11 @@ function create_project(){
 		/*
 		* CREATING SUBDOMAIN 
 		*/
-		$command_with_parameters = "/var/www/site-add.sh \"${projectdir}\" \"${projecturl}\"";
+		if($stage=="main"){
+			$command_with_parameters = "/var/www/site-add.sh \"${projectdir}\" \"${projecturl}\"";
+		}else{
+			$command_with_parameters = "/var/www/site-add-password.sh \"${projectdir}\" \"${projecturl}\"";
+		}
 		$output = $return = "";
 		
 		$exec = exec("${command_with_parameters}", $output, $return);
@@ -93,11 +97,11 @@ function create_project(){
 			print_r( $return );
 			die();
 		}
-		sleep(1);
+		sleep(0.5);
 		
-		if($stage!="main"){
-			copy("/var/www/phpmyadmin/public_html/.htaccess", "/var/www/".$projectdir."/public_html/.htaccess");
-		}
+		//if($stage!="main"){
+		//	copy("/var/www/phpmyadmin/public_html/.htaccess", "/var/www/".$projectdir."/public_html/.htaccess");
+		//}
 	}
 	
 	
