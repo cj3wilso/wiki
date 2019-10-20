@@ -41,18 +41,18 @@ function create_project(){
 	$siteurl = "http://".$projectname.".christinewilson.ca";
 	foreach ($projects as $project) {
 		$projecturl = $projectname;
+		$projectdir = $projectname;
 		if($project!="main"){
 			$projecturl = $projectname.$project;
 			$siteurl = "http://".$projecturl.".christinewilson.ca";
-			$projectname = $projectname."_".$project;
+			$projectdir = $projectname."_".$project;
 		}
 		$html_url .= "<li><a href='$siteurl' target='_blank'>$siteurl</a></li>";
-		$gitremote .= "<pre>git remote add deploy ssh://christine@35.192.41.230/var/git/".$projectname.".git/</pre><br>";
+		$gitremote .= "<pre>git remote add deploy ssh://christine@35.192.41.230/var/git/".$projectdir.".git/</pre><br>";
 		
 		/*
 		* CREATING GIT PROJECT 
 		*/
-		/* double quote here because you want PHP to expand $form["projectname"] */
 		/* Escape double quotes so they are passed to the shell because you do not want the shell to choke on spaces */
 		$command_with_parameters = "/var/www/project-create.sh \"${projecturl}\"";
 		$output = $return = "";
