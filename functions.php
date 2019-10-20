@@ -106,17 +106,7 @@ function delete_project(){
 				if (strpos($checkproject, "_") !== false) {
 					$stage = substr($checkproject, strrpos($checkproject, '_' )+1); 
 					$project = $project."_".$stage;
-					echo $project;
-					die();
 				}
-				/*
-				if (strpos($checkproject, "_") !== false) {
-					$stage = substr($project, strpos($project, "_") + 1);   
-					$project = $project."_".$stage;
-					echo $project;
-					die();
-				}
-				*/
 				/* double quote here because you want PHP to expand $form["projectname"] */
 				/* Escape double quotes so they are passed to the shell because you do not want the shell to choke on spaces */
 				$projectname = str_replace(" ", "-", strtolower(trim($project)));
