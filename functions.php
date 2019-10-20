@@ -42,7 +42,7 @@ function create_project(){
 	foreach ($projects as $project) {
 		$projecturl = $projectname;
 		if($project!="main"){
-			$projecturl = $projectname."-".$project;
+			$projecturl = $projectname.$project;
 			$siteurl = "http://".$projecturl.".christinewilson.ca";
 			$projectname = $projectname."_".$project;
 		}
