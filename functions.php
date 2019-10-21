@@ -56,6 +56,7 @@ function create_project(){
 			/*
 			* CREATING GIT PROJECT 
 			*/
+			echo "wordpress-create";
 			create_git_project($projectdir,"wordpress-create");
 		}else{
 			/*
@@ -67,6 +68,18 @@ function create_project(){
 		* CREATING SUBDOMAIN 
 		*/
 		create_subdomain($projectdir,$projecturl,$stage);
+		if($form["wordpress"]!="on"){
+			$command_with_parameters = "echo '<!DOCTYPE html>
+			<html>
+			<body>
+			<h1>Project \"${projectdir}\" is set up</h1>
+			<p>Move your Git files to put real site up ;)</p>
+			</body>
+			</html>' >> /var/www/\"${projectdir}\"/public_html/index.html";
+			$output = $return = "";
+			$exec = exec("${command_with_parameters}", $output, $return);
+			display_errors($exec, $output, $return, 'Create Git Project');
+		}
 		sleep(0.5);
 	}
 	
