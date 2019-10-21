@@ -52,9 +52,26 @@ function create_project(){
 		
 		//Is this a WordPress site?
 		if($form["wordpress"]=="on"){
-			create_wordpress_project($projectdir,$projecturl,$stage);
+			create_wordpress_directory($projectdir);
+			/*
+			* CREATING GIT PROJECT 
+			*/
+			//create_git_project_wordpress($projectdir);
+				
+			/*
+			* CREATING SUBDOMAIN 
+			*/
+			//create_subdomain_wordpress($projectdir,$projecturl,$stage);
 		}else{
-			create_basic_project($projectdir,$projecturl,$stage);
+			/*
+			* CREATING GIT PROJECT 
+			*/
+			create_git_project($projectdir);
+				
+			/*
+			* CREATING SUBDOMAIN 
+			*/
+			create_subdomain($projectdir,$projecturl,$stage);
 		}
 		sleep(0.5);
 	}
@@ -90,20 +107,40 @@ function create_project(){
     die();
 }
 
-function create_basic_project($projectdir,$projecturl,$stage){
-	/*
-	* CREATING GIT PROJECT 
-	*/
-	create_git_project($projectdir);
-		
-	/*
-	* CREATING SUBDOMAIN 
-	*/
-	create_subdomain($projectdir,$projecturl,$stage);
-}
-
-function create_wordpress_project($projectdir,$projecturl){
+function create_wordpress_directory($projectdir){
+	$site_path = '/var/www/'.$projectdir.'/public_html';
+	$theme_path = '/var/www/'.$projectdir.'/public_html/wp-content/themes'.$projectdir;
 	
+	//Create project site base so can move WordPress files over
+	if (!file_exists($site_path)) {
+		mkdir($site_path, 0775, true);
+	}
+	/* Escape double quotes so they are passed to the shell because you do not want the shell to choke on spaces */
+	$command_with_parameters = "cp -a /var/www/default/public_html/. \"${site_path}\"";
+	$output = $return = "";
+
+	/* double quote here because you want PHP to expand $command_with_parameters, a string */
+	//$exec = exec("${command_with_parameters}", $output, $return);
+	$exec = exec("${command_with_parameters}", $output, $return);
+	 
+		
+	//if($return){
+		echo "PROJECT CREATE:<br /><br />";
+		echo "Exec:<br />";
+		print_r( $exec );
+		echo "<br />----------------<br />";
+		echo "Output:<br />";
+		print_r( $output );
+		echo "<br />----------------<br />";
+		echo "Return:<br />";
+		print_r( $return );
+		die();
+	//}
+	
+	//You've moved default site over so now add an empty project theme for Git
+	if (!file_exists($theme_path)) {
+		mkdir($theme_path, 0775, true);
+	}
 }
 
 function create_git_project($projectdir){
