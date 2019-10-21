@@ -135,10 +135,12 @@ function create_wordpress_directory($projectdir){
 	//}
 	
 	//Make folders proper permissions
-	$command_with_parameters = "find \"${site_path}\" -type d -exec chmod 0775 {} +";
-	echo $command_with_parameters;
-	$output = $return = "";
-	$exec = exec ("${command_with_parameters}", $output, $return);
+	//$command_with_parameters = "find \"${site_path}\" -type d -exec chmod 0775 {} +";
+	//echo $command_with_parameters;
+	//$output = $return = "";
+	//$exec = exec ("${command_with_parameters}", $output, $return);
+	
+	$exec = exec ("find \"${site_path}\" -type d -exec chmod 0775 {} +", $output, $return);
 	display_errors($exec, $output, $return, 'Folders with permissions',true);
 }
 
