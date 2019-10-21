@@ -115,7 +115,8 @@ function create_project(){
 
 function create_wordpress_directory($projectdir){
 	$site_path = '/var/www/'.$projectdir.'/public_html';
-	$theme_path = '/var/www/'.$projectdir.'/public_html/wp-content/themes/'.$projectdir;
+	$project_full_path = '/var/www/'.$projectdir;
+	//$theme_path = '/var/www/'.$projectdir.'/public_html/wp-content/themes/'.$projectdir;
 	
 	//Create project site base so can move WordPress files over
 	if (!file_exists($site_path)) {
@@ -135,12 +136,8 @@ function create_wordpress_directory($projectdir){
 	//}
 	
 	//Make folders proper permissions
-	//$command_with_parameters = "find \"${site_path}\" -type d -exec chmod 0775 {} +";
-	//echo $command_with_parameters;
-	//$output = $return = "";
-	//$exec = exec ("${command_with_parameters}", $output, $return);
-	
-	$exec = exec ("find \"${site_path}\" -type d -exec chmod 0775 {} +", $output, $return);
+	$output = $return = "";
+	$exec = exec ("find \"${project_full_path}\" -type d -exec chmod 0775 {} +", $output, $return);
 	display_errors($exec, $output, $return, 'Folders with permissions',true);
 }
 
