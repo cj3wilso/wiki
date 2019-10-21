@@ -158,17 +158,15 @@ function create_git_project($projectdir,$shfile){
 }
 
 function create_subdomain($projectdir,$projecturl,$stage){
-	echo $stage; 
 	if($stage=="main"){
 		$command_with_parameters = "/var/www/site-add.sh \"${projectdir}\" \"${projecturl}\"";
 	}else{
-		echo 'creating a password protect with site-add-password.sh';
 		$command_with_parameters = "/var/www/site-add-password.sh \"${projectdir}\" \"${projecturl}\"";
 	}
 	$output = $return = "";
 		
 	$exec = exec("${command_with_parameters}", $output, $return);
-	display_errors($exec, $output, $return, true);
+	display_errors($exec, $output, $return);
 }
 
 add_action('wp_ajax_delete_project', 'delete_project');
