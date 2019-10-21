@@ -103,7 +103,7 @@ function create_project(){
 
 function create_wordpress_directory($projectdir){
 	$site_path = '/var/www/'.$projectdir.'/public_html';
-	$theme_path = '/var/www/'.$projectdir.'/public_html/wp-content/themes'.$projectdir;
+	$theme_path = '/var/www/'.$projectdir.'/public_html/wp-content/themes/'.$projectdir;
 	
 	//Create project site base so can move WordPress files over
 	if (!file_exists($site_path)) {
@@ -131,6 +131,7 @@ function create_wordpress_directory($projectdir){
 
 function display_errors($exec, $output, $return, $function_name, $development_mode = false){
 	if($return || $development_mode==true){
+		echo "<br /><br />";
 		echo $function_name."<br /><br />";
 		echo "Execution stopped at:<br />";
 		print_r( $exec );
