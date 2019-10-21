@@ -99,7 +99,7 @@ function create_basic_project($projectdir,$projecturl){
 	/*
 	* CREATING SUBDOMAIN 
 	*/
-	create_subdomain($projectdir,$projecturl);
+	create_subdomain($projectdir,$projecturl,$stage);
 }
 
 function create_wordpress_project($projectdir,$projecturl){
@@ -128,7 +128,7 @@ function create_git_project($projectdir){
 	}
 }
 
-function create_subdomain($projectdir,$projecturl){
+function create_subdomain($projectdir,$projecturl,$stage){
 	if($stage=="main"){
 		$command_with_parameters = "/var/www/site-add.sh \"${projectdir}\" \"${projecturl}\"";
 	}else{
