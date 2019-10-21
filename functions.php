@@ -117,16 +117,16 @@ function create_wordpress_directory($projectdir){
 	$exec = exec("${command_with_parameters}", $output, $return);
 	display_errors($exec, $output, $return, 'Move WordPress files from default site', true);
 	
+	//You've moved default site over so now add an empty project theme for Git
+	if (!file_exists($theme_path)) {
+		mkdir($theme_path, 0775, true);
+	}
+	
 	//Make folders proper permissions
 	$command_with_parameters = "find \"${site_path}\" -type d -exec chmod 0775 {} +";
 	$output = $return = "";
 	$exec = exec ("${command_with_parameters}", $output, $return);
 	display_errors($exec, $output, $return, 'Folders with permissions');
-	
-	//You've moved default site over so now add an empty project theme for Git
-	if (!file_exists($theme_path)) {
-		mkdir($theme_path, 0775, true);
-	}
 }
 
 function display_errors($exec, $output, $return, $function_name, $development_mode = false){
