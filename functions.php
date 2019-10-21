@@ -162,6 +162,7 @@ function create_subdomain($projectdir,$projecturl,$stage){
 	if($stage=="main"){
 		$command_with_parameters = "/var/www/site-add.sh \"${projectdir}\" \"${projecturl}\"";
 	}else{
+		echo 'creating a password protect with site-add-password.sh';
 		$command_with_parameters = "/var/www/site-add-password.sh \"${projectdir}\" \"${projecturl}\"";
 	}
 	$output = $return = "";
