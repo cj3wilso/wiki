@@ -116,7 +116,7 @@ function create_project(){
 function create_wordpress_directory($projectdir){
 	$site_path = '/var/www/'.$projectdir.'/public_html';
 	$project_full_path = '/var/www/'.$projectdir;
-	//$theme_path = '/var/www/'.$projectdir.'/public_html/wp-content/themes/'.$projectdir;
+	$theme_path = '/var/www/'.$projectdir.'/public_html/wp-content/themes/'.$projectdir;
 	
 	//Create project site base so can move WordPress files over
 	if (!file_exists($site_path)) {
@@ -131,9 +131,9 @@ function create_wordpress_directory($projectdir){
 	display_errors($exec, $output, $return, 'Move WordPress files from default site');
 	
 	//You've moved default site over so now add an empty project theme for Git
-	//if (!file_exists($theme_path)) {
-	//	mkdir($theme_path, 0775, true);
-	//}
+	if (!file_exists($theme_path)) {
+		mkdir($theme_path, 0775, true);
+	}
 	
 	//Make folders proper permissions
 	$output = $return = "";
