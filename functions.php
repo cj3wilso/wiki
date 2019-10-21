@@ -72,7 +72,7 @@ function create_project(){
 			$command_with_parameters = "echo '<!DOCTYPE html>
 			<html>
 			<body>
-			<h1>Project \"${projectdir}\" is set up</h1>
+			<h1>Project \${projectdir}\ is set up</h1>
 			<p>Move your Git files to put real site up ;)</p>
 			</body>
 			</html>' >> /var/www/\"${projectdir}\"/public_html/index.html";
