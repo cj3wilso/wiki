@@ -158,6 +158,7 @@ function create_git_project($projectdir,$shfile){
 }
 
 function create_subdomain($projectdir,$projecturl,$stage){
+	echo $stage; 
 	if($stage=="main"){
 		$command_with_parameters = "/var/www/site-add.sh \"${projectdir}\" \"${projecturl}\"";
 	}else{
