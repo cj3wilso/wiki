@@ -52,9 +52,9 @@ function create_project(){
 		
 		//Is this a WordPress site?
 		if($form["wordpress"]=="on"){
-			create_wordpress_project($projectdir,$projecturl);
+			create_wordpress_project($projectdir,$projecturl,$stage);
 		}else{
-			create_basic_project($projectdir,$projecturl);
+			create_basic_project($projectdir,$projecturl,$stage);
 		}
 		sleep(0.5);
 	}
@@ -90,7 +90,7 @@ function create_project(){
     die();
 }
 
-function create_basic_project($projectdir,$projecturl){
+function create_basic_project($projectdir,$projecturl,$stage){
 	/*
 	* CREATING GIT PROJECT 
 	*/
