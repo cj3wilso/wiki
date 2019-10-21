@@ -56,18 +56,18 @@ foreach($projects as $k=>$project) {
 					<h3>Options</h3>
 					<div class="row form-group">
 						<div class="col-lg-3 ">
-							<label for="staging">Include Staging</label>
-						</div>
-						<div class="col-lg-9">
-							<input id="staging" name="staging" type="checkbox" data-toggle="toggle" data-on="Enabled" data-off="Disabled">
-						</div>
-					</div>
-					<div class="row form-group">
-						<div class="col-lg-3 ">
 							<label for="wordpress">WordPress</label>
 						</div>
 						<div class="col-lg-9">
 							<input id="wordpress" name="wordpress" type="checkbox" data-toggle="toggle" data-on="Enabled" data-off="Disabled">
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-3 ">
+							<label for="staging">Include Staging</label>
+						</div>
+						<div class="col-lg-9">
+							<input id="staging" name="staging" type="checkbox" data-toggle="toggle" data-on="Enabled" data-off="Disabled">
 						</div>
 					</div>
 					<!--
