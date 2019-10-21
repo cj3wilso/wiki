@@ -114,15 +114,14 @@ function create_wordpress_directory($projectdir){
 	$output = $return = "";
 
 	/* double quote here because you want PHP to expand $command_with_parameters, a string */
-	//$exec = exec("${command_with_parameters}", $output, $return);
 	$exec = exec("${command_with_parameters}", $output, $return);
-	display_errors($exec, $output, $return, true);
+	display_errors($exec, $output, $return, 'Move WordPress files from default site', true);
 	
 	//Make folders proper permissions
 	$command_with_parameters = "find \"${site_path}\" -type d -exec chmod 0775 {} +";
 	$output = $return = "";
 	$exec = exec ("${command_with_parameters}", $output, $return);
-	display_errors($exec, $output, $return);
+	display_errors($exec, $output, $return, 'Folders with permissions');
 	
 	//You've moved default site over so now add an empty project theme for Git
 	if (!file_exists($theme_path)) {
@@ -130,8 +129,9 @@ function create_wordpress_directory($projectdir){
 	}
 }
 
-function display_errors($exec, $output, $return, $development_mode = false){
+function display_errors($exec, $output, $return, $function_name, $development_mode = false){
 	if($return || $development_mode==true){
+		echo $function_name."<br /><br />";
 		echo "Execution stopped at:<br />";
 		print_r( $exec );
 		echo "<br />----------------<br />";
@@ -154,7 +154,7 @@ function create_git_project($projectdir,$shfile){
 
 	/* double quote here because you want PHP to expand $command_with_parameters, a string */
 	$exec = exec("${command_with_parameters}", $output, $return);
-	display_errors($exec, $output, $return);
+	display_errors($exec, $output, $return, 'Create Git Project');
 }
 
 function create_subdomain($projectdir,$projecturl,$stage){
@@ -166,7 +166,7 @@ function create_subdomain($projectdir,$projecturl,$stage){
 	$output = $return = "";
 		
 	$exec = exec("${command_with_parameters}", $output, $return);
-	display_errors($exec, $output, $return);
+	display_errors($exec, $output, $return, 'Create Subdomain');
 }
 
 add_action('wp_ajax_delete_project', 'delete_project');
@@ -201,7 +201,7 @@ function delete_project(){
 				$exec = exec("${command_with_parameters}", $output, $return);
 					
 				//If error print error and stop loop
-				display_errors($exec, $output, $return);
+				display_errors($exec, $output, $return, 'Project Delete');
 				
 				/*
 				* REMOVE SUBDOMAIN 
@@ -210,7 +210,7 @@ function delete_project(){
 				$output = $return = "";
 				
 				$exec = exec("${command_with_parameters}", $output, $return);
-				display_errors($exec, $output, $return);
+				display_errors($exec, $output, $return, 'Remove Subdomain');
 			}
 			sleep(0.5);
 		}
