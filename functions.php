@@ -130,8 +130,8 @@ function create_wordpress_directory($projectdir){
 	}
 }
 
-function display_errors($exec, $output, $return, $show = false){
-	if($return || $show==true){
+function display_errors($exec, $output, $return, $development_mode = false){
+	if($return || $development_mode==true){
 		echo "Execution stopped at:<br />";
 		print_r( $exec );
 		echo "<br />----------------<br />";
@@ -140,7 +140,10 @@ function display_errors($exec, $output, $return, $show = false){
 		echo "<br />----------------<br />";
 		echo "Return:<br />";
 		print_r( $return );
-		die();
+		//If this isn't for development then stop script here
+		if($development_mode==false){
+			die();
+		}
 	}
 }
 
@@ -163,7 +166,7 @@ function create_subdomain($projectdir,$projecturl,$stage){
 	$output = $return = "";
 		
 	$exec = exec("${command_with_parameters}", $output, $return);
-	display_errors($exec, $output, $return);
+	display_errors($exec, $output, $return, true);
 }
 
 add_action('wp_ajax_delete_project', 'delete_project');
