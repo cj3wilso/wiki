@@ -116,7 +116,6 @@ function create_project(){
 function create_wordpress_directory($projectdir){
 	$site_path = '/var/www/'.$projectdir.'/public_html';
 	$project_full_path = '/var/www/'.$projectdir;
-	//$theme_path = '/var/www/'.$projectdir.'/public_html/wp-content/themes/'.$projectdir;
 	
 	//Create project site base so can move WordPress files over
 	if (!file_exists($site_path)) {
@@ -130,15 +129,10 @@ function create_wordpress_directory($projectdir){
 	$exec = exec("${command_with_parameters}", $output, $return);
 	display_errors($exec, $output, $return, 'Move WordPress files from default site');
 	
-	//You've moved default site over so now add an empty project theme for Git
-	//if (!file_exists($theme_path)) {
-	//	mkdir($theme_path, 0775, true);
-	//}
-	
 	//Make folders proper permissions
 	$output = $return = "";
 	$exec = exec ("find \"${project_full_path}\" -type d -exec chmod 0775 {} +", $output, $return);
-	display_errors($exec, $output, $return, 'Folders with permissions',true);
+	display_errors($exec, $output, $return, 'Folders with permissions');
 }
 
 function display_errors($exec, $output, $return, $function_name, $development_mode = false){
@@ -167,7 +161,7 @@ function create_git_project($projectdir,$shfile){
 
 	/* double quote here because you want PHP to expand $command_with_parameters, a string */
 	$exec = exec("${command_with_parameters}", $output, $return);
-	display_errors($exec, $output, $return, 'Create Git Project',true);
+	display_errors($exec, $output, $return, 'Create Git Project');
 }
 
 function create_subdomain($projectdir,$projecturl,$stage){
