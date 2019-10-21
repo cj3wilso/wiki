@@ -94,6 +94,19 @@ function create_basic_project($projectdir,$projecturl){
 	/*
 	* CREATING GIT PROJECT 
 	*/
+	create_git_project($projectdir);
+		
+	/*
+	* CREATING SUBDOMAIN 
+	*/
+	create_subdomain($projectdir,$projecturl);
+}
+
+function create_wordpress_project($projectdir,$projecturl){
+	
+}
+
+function create_git_project($projectdir){
 	/* Escape double quotes so they are passed to the shell because you do not want the shell to choke on spaces */
 	$command_with_parameters = "/var/www/project-create.sh \"${projectdir}\"";
 	$output = $return = "";
@@ -113,10 +126,9 @@ function create_basic_project($projectdir,$projecturl){
 		print_r( $return );
 		die();
 	}
-		
-	/*
-	* CREATING SUBDOMAIN 
-	*/
+}
+
+function create_subdomain($projectdir,$projecturl){
 	if($stage=="main"){
 		$command_with_parameters = "/var/www/site-add.sh \"${projectdir}\" \"${projecturl}\"";
 	}else{
@@ -138,10 +150,6 @@ function create_basic_project($projectdir,$projecturl){
 		print_r( $return );
 		die();
 	}
-}
-
-function create_wordpress_project($projectdir,$projecturl){
-	
 }
 
 add_action('wp_ajax_delete_project', 'delete_project');
