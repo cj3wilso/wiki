@@ -56,23 +56,17 @@ function create_project(){
 			/*
 			* CREATING GIT PROJECT 
 			*/
-			//create_git_project_wordpress($projectdir);
-				
-			/*
-			* CREATING SUBDOMAIN 
-			*/
-			//create_subdomain_wordpress($projectdir,$projecturl,$stage);
+			create_git_project($projectdir,"wordpress-create");
 		}else{
 			/*
 			* CREATING GIT PROJECT 
 			*/
-			create_git_project($projectdir);
-				
-			/*
-			* CREATING SUBDOMAIN 
-			*/
-			create_subdomain($projectdir,$projecturl,$stage);
+			create_git_project($projectdir,"project-create");
 		}
+		/*
+		* CREATING SUBDOMAIN 
+		*/
+		create_subdomain($projectdir,$projecturl,$stage);
 		sleep(0.5);
 	}
 	
@@ -122,20 +116,13 @@ function create_wordpress_directory($projectdir){
 	/* double quote here because you want PHP to expand $command_with_parameters, a string */
 	//$exec = exec("${command_with_parameters}", $output, $return);
 	$exec = exec("${command_with_parameters}", $output, $return);
-	 
-		
-	//if($return){
-		echo "PROJECT CREATE:<br /><br />";
-		echo "Exec:<br />";
-		print_r( $exec );
-		echo "<br />----------------<br />";
-		echo "Output:<br />";
-		print_r( $output );
-		echo "<br />----------------<br />";
-		echo "Return:<br />";
-		print_r( $return );
-		die();
-	//}
+	display_errors($exec, $output, $return, true);
+	
+	//Make folders proper permissions
+	$command_with_parameters = "find \"${site_path}\" -type d -exec chmod 0775 {} +";
+	$output = $return = "";
+	$exec = exec ("${command_with_parameters}", $output, $return);
+	display_errors($exec, $output, $return);
 	
 	//You've moved default site over so now add an empty project theme for Git
 	if (!file_exists($theme_path)) {
@@ -143,17 +130,9 @@ function create_wordpress_directory($projectdir){
 	}
 }
 
-function create_git_project($projectdir){
-	/* Escape double quotes so they are passed to the shell because you do not want the shell to choke on spaces */
-	$command_with_parameters = "/var/www/project-create.sh \"${projectdir}\"";
-	$output = $return = "";
-
-	/* double quote here because you want PHP to expand $command_with_parameters, a string */
-	$exec = exec("${command_with_parameters}", $output, $return);
-		
-	if($return){
-		echo "PROJECT CREATE:<br /><br />";
-		echo "Exec:<br />";
+function display_errors($exec, $output, $return, $show = false){
+	if($return || $show==true){
+		echo "Execution stopped at:<br />";
 		print_r( $exec );
 		echo "<br />----------------<br />";
 		echo "Output:<br />";
@@ -163,6 +142,16 @@ function create_git_project($projectdir){
 		print_r( $return );
 		die();
 	}
+}
+
+function create_git_project($projectdir,$shfile){
+	/* Escape double quotes so they are passed to the shell because you do not want the shell to choke on spaces */
+	$command_with_parameters = "/var/www/\"${shfile}\".sh \"${projectdir}\"";
+	$output = $return = "";
+
+	/* double quote here because you want PHP to expand $command_with_parameters, a string */
+	$exec = exec("${command_with_parameters}", $output, $return);
+	display_errors($exec, $output, $return);
 }
 
 function create_subdomain($projectdir,$projecturl,$stage){
@@ -174,19 +163,7 @@ function create_subdomain($projectdir,$projecturl,$stage){
 	$output = $return = "";
 		
 	$exec = exec("${command_with_parameters}", $output, $return);
-		
-	if($return){
-		echo "SITE ADD:<br /><br />";
-		echo "Exec:<br />";
-		print_r( $exec );
-		echo "<br />----------------<br />";
-		echo "Output:<br />";
-		print_r( $output );
-		echo "<br />----------------<br />";
-		echo "Return:<br />";
-		print_r( $return );
-		die();
-	}
+	display_errors($exec, $output, $return);
 }
 
 add_action('wp_ajax_delete_project', 'delete_project');
@@ -221,18 +198,7 @@ function delete_project(){
 				$exec = exec("${command_with_parameters}", $output, $return);
 					
 				//If error print error and stop loop
-				if($return){
-					echo "PROJECT DELETE:<br /><br />";
-					echo "Exec:<br />";
-					print_r( $exec );
-					echo "<br />----------------<br />";
-					echo "Output:<br />";
-					print_r( $output );
-					echo "<br />----------------<br />";
-					echo "Return:<br />";
-					print_r( $return );
-					die();
-				}
+				display_errors($exec, $output, $return);
 				
 				/*
 				* REMOVE SUBDOMAIN 
@@ -241,19 +207,7 @@ function delete_project(){
 				$output = $return = "";
 				
 				$exec = exec("${command_with_parameters}", $output, $return);
-				
-				if($return){
-					echo "SITE REMOVE:<br /><br />";
-					echo "Exec:<br />";
-					print_r( $exec );
-					echo "<br />----------------<br />";
-					echo "Output:<br />";
-					print_r( $output );
-					echo "<br />----------------<br />";
-					echo "Return:<br />";
-					print_r( $return );
-					die();
-				}
+				display_errors($exec, $output, $return);
 			}
 			sleep(0.5);
 		}
