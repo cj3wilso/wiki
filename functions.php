@@ -50,52 +50,11 @@ function create_project(){
 		$html_url .= "<li><a href='$siteurl' target='_blank'>$siteurl</a></li>";
 		$gitremote .= "<pre>git remote add deploy ssh://christine@35.192.41.230/var/git/".$projectdir.".git/</pre><br>";
 		
-		/*
-		* CREATING GIT PROJECT 
-		*/
-		/* Escape double quotes so they are passed to the shell because you do not want the shell to choke on spaces */
-		$command_with_parameters = "/var/www/project-create.sh \"${projectdir}\"";
-		$output = $return = "";
-
-		/* double quote here because you want PHP to expand $command_with_parameters, a string */
-		$exec = exec("${command_with_parameters}", $output, $return);
-		
-		if($return){
-			echo "PROJECT CREATE:<br /><br />";
-			echo "Exec:<br />";
-			print_r( $exec );
-			echo "<br />----------------<br />";
-			echo "Output:<br />";
-			print_r( $output );
-			echo "<br />----------------<br />";
-			echo "Return:<br />";
-			print_r( $return );
-			die();
-		}
-		
-		/*
-		* CREATING SUBDOMAIN 
-		*/
-		if($stage=="main"){
-			$command_with_parameters = "/var/www/site-add.sh \"${projectdir}\" \"${projecturl}\"";
+		//Is this a WordPress site?
+		if($form["wordpress"]=="on"){
+			create_wordpress_project($projectdir,$projecturl);
 		}else{
-			$command_with_parameters = "/var/www/site-add-password.sh \"${projectdir}\" \"${projecturl}\"";
-		}
-		$output = $return = "";
-		
-		$exec = exec("${command_with_parameters}", $output, $return);
-		
-		if($return){
-			echo "SITE ADD:<br /><br />";
-			echo "Exec:<br />";
-			print_r( $exec );
-			echo "<br />----------------<br />";
-			echo "Output:<br />";
-			print_r( $output );
-			echo "<br />----------------<br />";
-			echo "Return:<br />";
-			print_r( $return );
-			die();
+			create_basic_project($projectdir,$projecturl);
 		}
 		sleep(0.5);
 	}
@@ -129,6 +88,60 @@ function create_project(){
 	wp_mail( get_option('admin_email'), $title, $email_message, $headers );
 	
     die();
+}
+
+function create_basic_project($projectdir,$projecturl){
+	/*
+	* CREATING GIT PROJECT 
+	*/
+	/* Escape double quotes so they are passed to the shell because you do not want the shell to choke on spaces */
+	$command_with_parameters = "/var/www/project-create.sh \"${projectdir}\"";
+	$output = $return = "";
+
+	/* double quote here because you want PHP to expand $command_with_parameters, a string */
+	$exec = exec("${command_with_parameters}", $output, $return);
+		
+	if($return){
+		echo "PROJECT CREATE:<br /><br />";
+		echo "Exec:<br />";
+		print_r( $exec );
+		echo "<br />----------------<br />";
+		echo "Output:<br />";
+		print_r( $output );
+		echo "<br />----------------<br />";
+		echo "Return:<br />";
+		print_r( $return );
+		die();
+	}
+		
+	/*
+	* CREATING SUBDOMAIN 
+	*/
+	if($stage=="main"){
+		$command_with_parameters = "/var/www/site-add.sh \"${projectdir}\" \"${projecturl}\"";
+	}else{
+		$command_with_parameters = "/var/www/site-add-password.sh \"${projectdir}\" \"${projecturl}\"";
+	}
+	$output = $return = "";
+		
+	$exec = exec("${command_with_parameters}", $output, $return);
+		
+	if($return){
+		echo "SITE ADD:<br /><br />";
+		echo "Exec:<br />";
+		print_r( $exec );
+		echo "<br />----------------<br />";
+		echo "Output:<br />";
+		print_r( $output );
+		echo "<br />----------------<br />";
+		echo "Return:<br />";
+		print_r( $return );
+		die();
+	}
+}
+
+function create_wordpress_project($projectdir,$projecturl){
+	
 }
 
 add_action('wp_ajax_delete_project', 'delete_project');
