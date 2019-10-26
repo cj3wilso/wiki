@@ -227,7 +227,7 @@ function delete_project(){
 				/*
 				* REMOVE DATABASE IF WORDPRESS FOUND 
 				*/
-				if ( is_dir( "/var/www/$projectdir/public_html/wp-content" ) ) {
+				if ( is_dir( "/var/www/$projectdir/public_html/wp-content/" ) ) {
 					$command_with_parameters = "/var/www/database-delete.sh \"${projectdir}\"";
 					$output = $return = "";
 					$exec = exec("${command_with_parameters}", $output, $return);
