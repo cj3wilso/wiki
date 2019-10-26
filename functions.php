@@ -231,7 +231,7 @@ function delete_project(){
 					$command_with_parameters = "/var/www/database-delete.sh \"${projectdir}\"";
 					$output = $return = "";
 					$exec = exec("${command_with_parameters}", $output, $return);
-					display_errors($exec, $output, $return, 'Remove WordPress Database');     
+					display_errors($exec, $output, $return, 'Remove WordPress Database',true);     
 				}
 			}
 			sleep(0.5);
