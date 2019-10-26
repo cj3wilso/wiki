@@ -60,7 +60,7 @@ function create_project(){
 			/*
 			* CREATING WORDPRESS DATABASE 
 			*/
-			create_wordpress_database($projectdir,"database-wordpress-create");
+			create_database($projectdir,"database-wordpress-create");
 		}else{
 			/*
 			* CREATING GIT PROJECT 
