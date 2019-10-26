@@ -52,11 +52,11 @@ function create_project(){
 		
 		//Is this a WordPress site?
 		if($form["wordpress"]=="on"){
-			create_wordpress_directory($projectdir);
+			//create_wordpress_directory($projectdir);
 			/*
 			* CREATING GIT PROJECT 
 			*/
-			create_git_project($projectdir,"wordpress-create");
+			//create_git_project($projectdir,"wordpress-create");
 			/*
 			* CREATING WORDPRESS DATABASE 
 			*/
@@ -69,7 +69,7 @@ function create_project(){
 		}
 		/*
 		* CREATING SUBDOMAIN 
-		*/
+		
 		create_subdomain($projectdir,$projecturl,$stage);
 		if($form["wordpress"]!="on"){
 			$command_with_parameters = "echo '<!DOCTYPE html>
@@ -84,6 +84,7 @@ function create_project(){
 			display_errors($exec, $output, $return, 'Create Git Project');
 		}
 		sleep(0.5);
+		*/
 	}
 	
 	
