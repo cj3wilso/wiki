@@ -57,6 +57,10 @@ function create_project(){
 			* CREATING GIT PROJECT 
 			*/
 			create_git_project($projectdir,"wordpress-create");
+			/*
+			* CREATING WORDPRESS DATABASE 
+			*/
+			create_wordpress_database($projectdir)
 		}else{
 			/*
 			* CREATING GIT PROJECT 
@@ -162,6 +166,13 @@ function create_git_project($projectdir,$shfile){
 	/* double quote here because you want PHP to expand $command_with_parameters, a string */
 	$exec = exec("${command_with_parameters}", $output, $return);
 	display_errors($exec, $output, $return, 'Create Git Project');
+}
+
+function create_wordpress_database($projectdir){
+	$command_with_parameters = "/var/www/database-create.sh \"${projectdir}\"";
+	$output = $return = "";
+	$exec = exec("${command_with_parameters}", $output, $return);
+	display_errors($exec, $output, $return, 'Create WordPress Database');
 }
 
 function create_subdomain($projectdir,$projecturl,$stage){
