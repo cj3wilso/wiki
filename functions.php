@@ -208,15 +208,12 @@ function delete_project(){
 					$projectdir = $projecturl = $projectname;
 				}
 				
-				/* double quote here because you want PHP to expand $form["projectname"] */
-				/* Escape double quotes so they are passed to the shell because you do not want the shell to choke on spaces */
+				/*
+				* REMOVE PROJECT 
+				*/
 				$command_with_parameters = "/var/www/project-delete.sh \"${projectdir}\"";
 				$output = $return = "";
-
-				/* double quote here because you want PHP to expand $command_with_parameters, a string */
 				$exec = exec("${command_with_parameters}", $output, $return);
-					
-				//If error print error and stop loop
 				display_errors($exec, $output, $return, 'Project Delete');
 				
 				/*
@@ -224,9 +221,18 @@ function delete_project(){
 				*/
 				$command_with_parameters = "/var/www/site-remove.sh \"${projecturl}\"";
 				$output = $return = "";
-				
 				$exec = exec("${command_with_parameters}", $output, $return);
 				display_errors($exec, $output, $return, 'Remove Subdomain');
+				
+				/*
+				* REMOVE DATABASE IF WORDPRESS FOUND 
+				*/
+				if ( is_dir( "/var/www/$projectdir/public_html/wp-content" ) ) {
+					$command_with_parameters = "/var/www/database-delete.sh \"${projectdir}\"";
+					$output = $return = "";
+					$exec = exec("${command_with_parameters}", $output, $return);
+					display_errors($exec, $output, $return, 'Remove WordPress Database');     
+				}
 			}
 			sleep(0.5);
 		}
