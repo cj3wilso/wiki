@@ -60,7 +60,7 @@ function create_project(){
 			/*
 			* CREATING WORDPRESS DATABASE 
 			*/
-			create_wordpress_database($projectdir);
+			create_wordpress_database($projectdir,"database-wordpress-create");
 		}else{
 			/*
 			* CREATING GIT PROJECT 
@@ -169,8 +169,8 @@ function create_git_project($projectdir,$shfile){
 	display_errors($exec, $output, $return, 'Create Git Project');
 }
 
-function create_wordpress_database($projectdir){
-	$command_with_parameters = "/var/www/database-create.sh \"${projectdir}\"";
+function create_database($projectdir,$shfile){
+	$command_with_parameters = "/var/www/\"${shfile}\.sh \"${projectdir}\"";
 	$output = $return = "";
 	$exec = exec("${command_with_parameters}", $output, $return);
 	display_errors($exec, $output, $return, 'Create WordPress Database');
