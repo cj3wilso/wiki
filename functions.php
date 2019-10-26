@@ -171,7 +171,7 @@ function create_database($projectdir,$shfile){
 	$command_with_parameters = "/var/www/\"${shfile}\".sh \"${projectdir}\"";
 	$output = $return = "";
 	$exec = exec("${command_with_parameters}", $output, $return);
-	display_errors($exec, $output, $return, 'Create WordPress Database',true);
+	display_errors($exec, $output, $return, 'Create WordPress Database');
 }
 
 function create_subdomain($projectdir,$projecturl,$stage){
