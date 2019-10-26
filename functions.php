@@ -171,11 +171,9 @@ function create_git_project($projectdir,$shfile){
 
 function create_database($projectdir,$shfile){
 	$command_with_parameters = "/var/www/\"${shfile}\".sh \"${projectdir}\"";
-	echo $command_with_parameters;
-	return true;
 	$output = $return = "";
-	$exec = exec("${command_with_parameters}", $output, $return,true);
-	display_errors($exec, $output, $return, 'Create WordPress Database');
+	$exec = exec("${command_with_parameters}", $output, $return);
+	display_errors($exec, $output, $return, 'Create WordPress Database',true);
 }
 
 function create_subdomain($projectdir,$projecturl,$stage){
