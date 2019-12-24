@@ -79,7 +79,7 @@ function create_project(){
 			<p>Move your Git files to put real site up ;)</p>
 			</body>
 			</html>' >> /var/www/\"${projectdir}\"/public_html/index.html;";
-			$command_with_parameters .= "sudo chmod 664 -R /var/www/\"${projectdir}\"/public_html/index.html";
+			$command_with_parameters .= "sudo chmod 644 -R /var/www/\"${projectdir}\"/public_html/index.html";
 			$output = $return = "";
 			$exec = exec("${command_with_parameters}", $output, $return);
 			display_errors($exec, $output, $return, 'Create Git Project');
