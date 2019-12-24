@@ -78,7 +78,7 @@ function create_project(){
 			<h1>Project \"${projectdir}\" is set up</h1>
 			<p>Move your Git files to put real site up ;)</p>
 			</body>
-			</html>' >> /var/www/\"${projectdir}\"/public_html/index.html";
+			</html>' >> /var/www/\"${projectdir}\"/public_html/index.html;";
 			$command_with_parameters .= "sudo chmod 777 -R /var/www/\"${projectdir}\"/public_html/index.html";
 			$output = $return = "";
 			$exec = exec("${command_with_parameters}", $output, $return);
