@@ -70,6 +70,21 @@ foreach($projects as $k=>$project) {
 							<input id="staging" name="staging" type="checkbox" data-toggle="toggle" data-on="Enabled" data-off="Disabled">
 						</div>
 					</div>
+					<div class="row form-group">
+						<div class="col-lg-3 ">
+							<label for="staging">Language</label>
+						</div>
+						<div class="col-lg-9">
+							<div class="form-check form-check-inline">
+							  <input class="form-check-input" type="radio" name="language" id="php" value="php" checked>
+							  <label class="form-check-label" for="php">PHP</label>
+							</div>
+							<div class="form-check form-check-inline">
+							  <input class="form-check-input" type="radio" name="language" id="python" value="python">
+							  <label class="form-check-label" for="python">Python</label>
+							</div>
+						</div>
+					</div>
 					<!--
 					<div class="row">
 						<div class="col-lg-4 form-group">
