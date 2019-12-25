@@ -20,6 +20,9 @@ function create_project(){
 
     parse_str($_POST['form'], $form);
 	
+	//Language
+	$language = $form["language"];
+	
 	//Format Project Name for server
 	$projectname = str_replace(" ", "-", strtolower(trim($form["projectname"])));
 	
@@ -70,16 +73,24 @@ function create_project(){
 		/*
 		* CREATING SUBDOMAIN 
 		*/
-		create_subdomain($projectdir,$projecturl,$stage);
+		create_subdomain($projectdir,$projecturl,$stage,$language);
 		if($form["wordpress"]!="on"){
-			$command_with_parameters = "echo '<!DOCTYPE html>
-			<html>
-			<body>
-			<h1>Project \"${projectdir}\" is set up</h1>
-			<p>Move your Git files to put real site up ;)</p>
-			</body>
-			</html>' >> /var/www/\"${projectdir}\"/public_html/index.html;";
-			$command_with_parameters .= "sudo chmod 644 -R /var/www/\"${projectdir}\"/public_html/index.html";
+			if($language=="python"){
+				$command_with_parameters = "echo '#!/usr/bin/python -d
+				# Print necessary headers.
+				print ('Content-Type: text/html\n\n')
+				print('<h1>Python project \"${projectdir}\" is set up</h1>')
+				print('<p>Move your Git files to put real site up ;)</p>')' >> /var/www/\"${projectdir}\"/public_html/index.py;";
+				$command_with_parameters .= "sudo chmod 777 -R /var/www/\"${projectdir}\"/public_html/index.py";
+			}else{
+				$command_with_parameters = "echo '<!DOCTYPE html>
+				<html>
+				<body>
+				<h1>Project \"${projectdir}\" is set up</h1>
+				<p>Move your Git files to put real site up ;)</p>
+				</body>
+				</html>' >> /var/www/\"${projectdir}\"/public_html/index.html;";
+			}
 			$output = $return = "";
 			$exec = exec("${command_with_parameters}", $output, $return);
 			display_errors($exec, $output, $return, 'Create Git Project');
@@ -175,11 +186,19 @@ function create_database($projectdir,$shfile){
 	display_errors($exec, $output, $return, 'Create WordPress Database');
 }
 
-function create_subdomain($projectdir,$projecturl,$stage){
-	if($stage=="main"){
-		$command_with_parameters = "/var/www/site-add.sh \"${projectdir}\" \"${projecturl}\"";
+function create_subdomain($projectdir,$projecturl,$stage,$language){
+	if($language == "python"){
+		if($stage=="main"){
+			$command_with_parameters = "/var/www/site-add-python.sh \"${projectdir}\" \"${projecturl}\"";
+		}else{
+			$command_with_parameters = "/var/www/site-add-password-python.sh \"${projectdir}\" \"${projecturl}\"";
+		}
 	}else{
-		$command_with_parameters = "/var/www/site-add-password.sh \"${projectdir}\" \"${projecturl}\"";
+		if($stage=="main"){
+			$command_with_parameters = "/var/www/site-add.sh \"${projectdir}\" \"${projecturl}\"";
+		}else{
+			$command_with_parameters = "/var/www/site-add-password.sh \"${projectdir}\" \"${projecturl}\"";
+		}
 	}
 	$output = $return = "";
 	$exec = exec("${command_with_parameters}", $output, $return);
