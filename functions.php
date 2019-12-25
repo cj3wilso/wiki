@@ -78,7 +78,7 @@ function create_project(){
 			if($language=="python"){
 				$command_with_parameters = "echo '#!/usr/bin/python -d
 				# Print necessary headers.
-				print (\"Content-Type: text/html/\n/\n\")
+				print (\"Content-Type: text/html\\\n\\\n\")
 				print(\"<h1>Python project ${projectdir} is set up</h1>\")
 				print(\"<p>Move your Git files to put real site up ;)</p>\")' >> /var/www/\"${projectdir}\"/public_html/index.py;";
 				$command_with_parameters .= "sudo chmod 777 -R /var/www/\"${projectdir}\"/public_html/index.py";
