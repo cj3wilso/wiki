@@ -1,9 +1,29 @@
 <?php
 
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * You'll need a folder on the server to hold the default WordPress files (/var/www/html/wordpressfiles)
+ * Bash scripts are kept in /var/www/scripts folder
+ * Update var/www to 777, original is 755 (chmod 777 /var/www) and move files, then change back (chmod 755 /var/www)
+ * Create these directories in /var: cd /var, mkdir -m 775 git, mkdir -m 775 env
+ * Find your bash project and open up project-create.sh
+ * At the top of the file you'll find all the locations you need to move files around
+ * To create a Git Project you need to install docker-compose
+ * Follow these instructions for Linux: https://docs.docker.com/compose/install/
+ * Return 126 means “command not executable" for exec, try changing the permissions of the file to 755 (can't write but can read and execute). 
+ * Next you can echo a string in the file and exit early with "exit 1" to test where going wrong.
+ * echo "$USER" to see linux user and $GROUPS to see linux groups of current user in bash
+ * <?php echo exec('whoami'); ?> to see linux user in PHP
+ * Add to the end of any commands not working to see errors written: 2>&1
+ * PHP and shell scripts run on www-data user. You need to edit this user to require no password on your script files only (to keep rest of web files secure)
+ * sudo visudo
+ * www-data ALL=(ALL) NOPASSWD: ALL
+ * www-data ALL=(ALL) NOPASSWD: /var/www/html/newsite1, /var/www/html/newsite2
+ * https://www.tecmint.com/run-sudo-command-without-password-linux/
+ * Right now requiring no password for www-data which is not secure.. you'll need to figure out and fix
+ * 
+ * THINGS TO DO 
+ * Create an FTP user to login only for this website
+ * Create ssl certificate
  */
  
 define( 'THEME_TEXTDOMAIN', 'wiki-textdomain' );
@@ -57,13 +77,13 @@ function create_project(){
 		if($form["wordpress"]=="on"){
 			create_wordpress_directory($projectdir);
 			/*
-			* CREATING GIT PROJECT 
-			*/
-			create_git_project($projectdir,"wordpress-create");
-			/*
 			* CREATING WORDPRESS DATABASE 
 			*/
 			create_database($projectdir,"database-wordpress-create");
+			/*
+			* CREATING GIT PROJECT 
+			*/
+			create_git_project($projectdir,"wordpress-create");
 		}else{
 			/*
 			* CREATING GIT PROJECT 
@@ -81,8 +101,8 @@ function create_project(){
 print(\"Content-Type: text/html\")
 print()
 print(\"<h1>Python project ${projectdir} is set up</h1>\")
-print(\"<p>Move your Git files to put real site up ;)</p>\")' >> /var/www/\"${projectdir}\"/public_html/index.py;";
-				$command_with_parameters .= "sudo chmod 777 -R /var/www/\"${projectdir}\"/public_html/index.py";
+print(\"<p>Move your Git files to put real site up ;)</p>\")' >> /var/www/html/\"${projectdir}\"/index.py;";
+				$command_with_parameters .= "sudo chmod 777 -R /var/www/html/\"${projectdir}\"/index.py";
 			}else{
 				$command_with_parameters = "echo '<!DOCTYPE html>
 				<html>
@@ -90,11 +110,11 @@ print(\"<p>Move your Git files to put real site up ;)</p>\")' >> /var/www/\"${pr
 				<h1>Project \"${projectdir}\" is set up</h1>
 				<p>Move your Git files to put real site up ;)</p>
 				</body>
-				</html>' >> /var/www/\"${projectdir}\"/public_html/index.html;";
+				</html>' >> /var/www/html/\"${projectdir}\"/index.html;";
 			}
 			$output = $return = "";
 			$exec = exec("${command_with_parameters}", $output, $return);
-			display_errors($exec, $output, $return, 'Create Git Project');
+			display_errors($exec, $output, $return, 'Create Git Project (create_project function)');
 		}
 		sleep(0.5);
 	}
@@ -130,24 +150,24 @@ print(\"<p>Move your Git files to put real site up ;)</p>\")' >> /var/www/\"${pr
 }
 
 function create_wordpress_directory($projectdir){
-	$site_path = '/var/www/'.$projectdir.'/public_html';
-	$project_full_path = '/var/www/'.$projectdir;
+	$site_path = '/var/www/html/'.$projectdir;
 	
 	//Create project site base so can move WordPress files over
 	if (!file_exists($site_path)) {
 		mkdir($site_path, 0775, true);
 	}
 	/* Escape double quotes so they are passed to the shell because you do not want the shell to choke on spaces */
-	$command_with_parameters = "cp -a /var/www/default/public_html/. \"${site_path}\"";
+	$command_with_parameters = "cp -a /var/www/html/wordpressfiles/. \"${site_path}\"";
 	$output = $return = "";
 
 	/* double quote here because you want PHP to expand $command_with_parameters, a string */
 	$exec = exec("${command_with_parameters}", $output, $return);
 	display_errors($exec, $output, $return, 'Move WordPress files from default site');
 	
+	$exec = exec ("find \"${site_path}\" -type f -exec chmod 0777 {} +", $output, $return);
 	//Make folders proper permissions
 	$output = $return = "";
-	$exec = exec ("find \"${project_full_path}\" -type d -exec chmod 0775 {} +", $output, $return);
+	$exec = exec ("find \"${site_path}\" -type d -exec chmod 0777 {} +", $output, $return);
 	display_errors($exec, $output, $return, 'Folders with permissions');
 }
 
@@ -172,16 +192,17 @@ function display_errors($exec, $output, $return, $function_name, $development_mo
 
 function create_git_project($projectdir,$shfile){
 	/* Escape double quotes so they are passed to the shell because you do not want the shell to choke on spaces */
-	$command_with_parameters = "/var/www/\"${shfile}\".sh \"${projectdir}\"";
+	$command_with_parameters = "/var/www/scripts/\"${shfile}\".sh \"${projectdir}\"";
 	$output = $return = "";
 
 	/* double quote here because you want PHP to expand $command_with_parameters, a string */
 	$exec = exec("${command_with_parameters}", $output, $return);
-	display_errors($exec, $output, $return, 'Create Git Project');
+	display_errors($exec, $output, $return, 'Create Git Project  (create_git_project function)');
+	//print_r(array(exec('whoami')));
 }
 
 function create_database($projectdir,$shfile){
-	$command_with_parameters = "/var/www/\"${shfile}\".sh \"${projectdir}\"";
+	$command_with_parameters = "/var/www/scripts/\"${shfile}\".sh \"${projectdir}\"";
 	$output = $return = "";
 	$exec = exec("${command_with_parameters}", $output, $return);
 	display_errors($exec, $output, $return, 'Create WordPress Database');
@@ -190,15 +211,15 @@ function create_database($projectdir,$shfile){
 function create_subdomain($projectdir,$projecturl,$stage,$language){
 	if($language == "python"){
 		if($stage=="main"){
-			$command_with_parameters = "/var/www/site-add-python.sh \"${projectdir}\" \"${projecturl}\"";
+			$command_with_parameters = "/var/www/scripts/site-add-python.sh \"${projectdir}\" \"${projecturl}\"";
 		}else{
-			$command_with_parameters = "/var/www/site-add-password-python.sh \"${projectdir}\" \"${projecturl}\"";
+			$command_with_parameters = "/var/www/scripts/site-add-password-python.sh \"${projectdir}\" \"${projecturl}\"";
 		}
 	}else{
 		if($stage=="main"){
-			$command_with_parameters = "/var/www/site-add.sh \"${projectdir}\" \"${projecturl}\"";
+			$command_with_parameters = "/var/www/scripts/site-add.sh \"${projectdir}\" \"${projecturl}\"";
 		}else{
-			$command_with_parameters = "/var/www/site-add-password.sh \"${projectdir}\" \"${projecturl}\"";
+			$command_with_parameters = "/var/www/scripts/site-add-password.sh \"${projectdir}\" \"${projecturl}\"";
 		}
 	}
 	$output = $return = "";
@@ -232,7 +253,7 @@ function delete_project(){
 				/*
 				* REMOVE PROJECT 
 				*/
-				$command_with_parameters = "/var/www/project-delete.sh \"${projectdir}\"";
+				$command_with_parameters = "/var/www/scripts/project-delete.sh \"${projectdir}\"";
 				$output = $return = "";
 				$exec = exec("${command_with_parameters}", $output, $return);
 				display_errors($exec, $output, $return, 'Project Delete');
@@ -240,7 +261,7 @@ function delete_project(){
 				/*
 				* REMOVE SUBDOMAIN 
 				*/
-				$command_with_parameters = "/var/www/site-remove.sh \"${projecturl}\"";
+				$command_with_parameters = "/var/www/scripts/site-remove.sh \"${projecturl}\"";
 				$output = $return = "";
 				$exec = exec("${command_with_parameters}", $output, $return);
 				display_errors($exec, $output, $return, 'Remove Subdomain');
@@ -248,9 +269,9 @@ function delete_project(){
 				/*
 				* REMOVE DATABASE IF WORDPRESS FOUND 
 				*/
-				$dir = "/var/www/$projectdir/public_html/wp-content";
+				$dir = "/var/www/html/$projectdir/wp-content";
 				//if (file_exists($dir)) {
-					$command_with_parameters = "/var/www/database-delete.sh \"${projectdir}\"";
+					$command_with_parameters = "/var/www/scripts/database-delete.sh \"${projectdir}\"";
 					$output = $return = "";
 					$exec = exec("${command_with_parameters}", $output, $return);
 					display_errors($exec, $output, $return, 'Remove Database');     
