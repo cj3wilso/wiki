@@ -1,6 +1,21 @@
 <?php
 
 /*
+ * Create a .htpasswd file under /etc/apache2 with user:staging and pwd:website
+ * https://hostingcanada.org/htpasswd-generator/
+ * Move file to apache2 folder:
+ * mv /var/www/scripts/.htpasswd /etc/apache2
+ *
+ * Check if you have Python installed: python3 --version
+ * If not install: https://docs.python-guide.org/starting/install3/linux/
+ * Allow Apache to run scripts
+ * sudo a2enmod mpm_prefork cgi
+ * Disable multi-threading processes
+ * sudo a2dismod mpm_event
+ * Check the python path at top of file to see if server has it
+ * If errors check the error log: tail /var/log/apache2/error.log
+ * Convert line returns to unix with this: dos2unix path_to_file/file.ext
+ *
  * You'll need a folder on the server to hold the default WordPress files (/var/www/html/wordpressfiles)
  * Bash scripts are kept in /var/www/scripts folder
  * Update var/www to 777, original is 755 (chmod 777 /var/www) and move files, then change back (chmod 755 /var/www)
@@ -24,6 +39,7 @@
  * THINGS TO DO 
  * Create an FTP user to login only for this website
  * Create ssl certificate
+ * Create domain name pointing
  */
  
 define( 'THEME_TEXTDOMAIN', 'wiki-textdomain' );
@@ -95,15 +111,32 @@ function create_project(){
 		*/
 		create_subdomain($projectdir,$projecturl,$stage,$language);
 		if($form["wordpress"]!="on"){
+			$site_path = "/var/www/html/".$projectdir;
 			if($language=="python"){
-				$command_with_parameters = "echo '#!/usr/bin/python -d
+				//Create index file
+				$command_with_parameters = "echo '#!/usr/bin/python3.7
 # Print necessary headers.
 print(\"Content-Type: text/html\")
 print()
 print(\"<h1>Python project ${projectdir} is set up</h1>\")
 print(\"<p>Move your Git files to put real site up ;)</p>\")' >> /var/www/html/\"${projectdir}\"/index.py;";
-				$command_with_parameters .= "sudo chmod 777 -R /var/www/html/\"${projectdir}\"/index.py";
+				$output = $return = "";
+				$exec = exec("${command_with_parameters}", $output, $return);
+				display_errors($exec, $output, $return, 'Create Git Project (create_project function)');
+				//Make folders proper permissions
+				$output = $return = "";
+				$exec = exec ("find \"${site_path}\" -type d -exec chmod 0744 {} +", $output, $return);
+				display_errors($exec, $output, $return, 'Folders with permissions');
+				//Make files proper permissions
+				$output = $return = "";
+				$exec = exec ("find \"${site_path}\" -type f -exec chmod 0755 {} +", $output, $return);
+				display_errors($exec, $output, $return, 'Files with permissions');
+				//Make unix encoded		
+				$output = $return = "";
+				$exec = exec ("dos2unix \"${site_path}\"/index.py", $output, $return);
+				display_errors($exec, $output, $return, 'Unix encoded');
 			}else{
+				//Create index file
 				$command_with_parameters = "echo '<!DOCTYPE html>
 				<html>
 				<body>
@@ -111,10 +144,18 @@ print(\"<p>Move your Git files to put real site up ;)</p>\")' >> /var/www/html/\
 				<p>Move your Git files to put real site up ;)</p>
 				</body>
 				</html>' >> /var/www/html/\"${projectdir}\"/index.html;";
+				$output = $return = "";
+				$exec = exec("${command_with_parameters}", $output, $return);
+				display_errors($exec, $output, $return, 'Create Git Project (create_project function)');
+				//Make folders proper permissions
+				$output = $return = "";
+				$exec = exec ("find \"${site_path}\" -type d -exec chmod 0755 {} +", $output, $return);
+				display_errors($exec, $output, $return, 'Folders with permissions');
+				//Make files proper permissions
+				$output = $return = "";
+				$exec = exec ("find \"${site_path}\" -type f -exec chmod 0644 {} +", $output, $return);
+				display_errors($exec, $output, $return, 'Files with permissions');
 			}
-			$output = $return = "";
-			$exec = exec("${command_with_parameters}", $output, $return);
-			display_errors($exec, $output, $return, 'Create Git Project (create_project function)');
 		}
 		sleep(0.5);
 	}
@@ -164,10 +205,13 @@ function create_wordpress_directory($projectdir){
 	$exec = exec("${command_with_parameters}", $output, $return);
 	display_errors($exec, $output, $return, 'Move WordPress files from default site');
 	
-	$exec = exec ("find \"${site_path}\" -type f -exec chmod 0777 {} +", $output, $return);
+	//Make files proper permissions
+	$output = $return = "";
+	$exec = exec ("find \"${site_path}\" -type f -exec chmod 0664 {} +", $output, $return);
+	display_errors($exec, $output, $return, 'Folders with permissions');
 	//Make folders proper permissions
 	$output = $return = "";
-	$exec = exec ("find \"${site_path}\" -type d -exec chmod 0777 {} +", $output, $return);
+	$exec = exec ("find \"${site_path}\" -type d -exec chmod 0775 {} +", $output, $return);
 	display_errors($exec, $output, $return, 'Folders with permissions');
 }
 
