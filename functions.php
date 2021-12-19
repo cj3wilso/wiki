@@ -1,4 +1,7 @@
 <?php
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
 
 /*
  * Create a .htpasswd file under /etc/apache2 with user:staging and pwd:website
@@ -6,6 +9,7 @@
  * Move file to apache2 folder:
  * mv /var/www/scripts/.htpasswd /etc/apache2
  *
+ * PYTHON
  * Check if you have Python installed: python3 --version
  * If not install: https://docs.python-guide.org/starting/install3/linux/
  * Allow Apache to run scripts
@@ -16,7 +20,12 @@
  * If errors check the error log: tail /var/log/apache2/error.log
  * Convert line returns to unix with this: dos2unix path_to_file/file.ext
  *
+ * WORDPRESS FILES
  * You'll need a folder on the server to hold the default WordPress files (/var/www/html/wordpressfiles)
+ * Add all your default plugins here: ACF Pro, Duplicator Pro, Limit Login Attempts Reloaded, Post Types Order, WooCommerce, WP Mail SMTP, WP Migrate DB, Yoast Duplicate Post, Yoast SEO, Yoast SEO WooCommerce
+ * Right now I don't have any good parent themes but do have Kalium and Shopkeeper 
+ *
+ * SCRIPT FILES
  * Bash scripts are kept in /var/www/scripts folder
  * Update var/www to 777, original is 755 (chmod 777 /var/www) and move files, then change back (chmod 755 /var/www)
  * Create these directories in /var: cd /var, mkdir -m 775 git, mkdir -m 775 env
@@ -29,17 +38,26 @@
  * echo "$USER" to see linux user and $GROUPS to see linux groups of current user in bash
  * <?php echo exec('whoami'); ?> to see linux user in PHP
  * Add to the end of any commands not working to see errors written: 2>&1
+ *
+ * USERS
  * PHP and shell scripts run on www-data user. You need to edit this user to require no password on your script files only (to keep rest of web files secure)
  * sudo visudo
  * www-data ALL=(ALL) NOPASSWD: ALL
  * www-data ALL=(ALL) NOPASSWD: /var/www/html/newsite1, /var/www/html/newsite2
  * https://www.tecmint.com/run-sudo-command-without-password-linux/
  * Right now requiring no password for www-data which is not secure.. you'll need to figure out and fix
+ *
+ * New user named as project name
+ * See all users in system: less /etc/passwd
+ * Delete user and user home: userdel -r usernamehere 
+ * https://www.cyberciti.biz/faq/linux-remove-user-command/
+ 
  * 
  * THINGS TO DO 
- * Create an FTP user to login only for this website
  * Create ssl certificate
- * Create domain name pointing
+ * Domain record lists ssl when it wasn't created
+ * Domain not listed in Current Projects list
+ * Domain conf file not deleted when delete site
  */
  
 define( 'THEME_TEXTDOMAIN', 'wiki-textdomain' );
@@ -61,6 +79,21 @@ function create_project(){
 	
 	//Format Project Name for server
 	$projectname = str_replace(" ", "-", strtolower(trim($form["projectname"])));
+	$orginal_projectname = $form["projectname"];
+	
+	//Set variables
+	$staging="";
+	if(isset($form["staging"])){
+		$staging = $form["staging"];
+	}
+	$wordpress="";
+	if(isset($form["wordpress"])){
+		$wordpress = $form["wordpress"];
+	}
+	$domain="";
+	if(isset($form["domain"])){
+		$domain = $form["domain"];
+	}
 	
 	//Exit if user tries to create a project that already exists
 	$currentprojects = explode(',', $form["currentprojects"]);	
@@ -72,30 +105,29 @@ function create_project(){
 	//Create an array to loop through different site stages
 	$stages = array();
 	$stages[] = "main";
-	if($form["staging"]=="on"){
+	if($staging=="on"){
 		$stages[] = "staging";
 	}
 	
 	$gitremote = $html_url = "";
 	foreach ($stages as $stage) {
-		if($stage=="main"){
-			$projectdir = $projecturl = $projectname;
-			$siteurl = "http://".$projectname.".christinewilson.ca";
-		}else{
+		$projectdir = $projecturl = $projectname;
+		if($stage!="main"){
 			$projectdir = $projectname."_".$stage;
 			$projecturl = $projectname."-".$stage;
-			$siteurl = "http://".$projecturl.".christinewilson.ca";	
 		}
+		$siteurl = "https://".$projecturl.".christinewilson.ca";
+		if($domain!="") $siteurl = "https://".$domain;
 		$html_url .= "<li><a href='$siteurl' target='_blank'>$siteurl</a></li>";
 		$gitremote .= "<pre>git remote add deploy ssh://christine@35.192.41.230/var/git/".$projectdir.".git/</pre><br>";
 		
 		//Is this a WordPress site?
-		if($form["wordpress"]=="on"){
+		if($wordpress=="on"){
 			create_wordpress_directory($projectdir);
 			/*
 			* CREATING WORDPRESS DATABASE 
 			*/
-			create_database($projectdir,"database-wordpress-create");
+			create_database($projectdir,"database-wordpress-create",$domain);
 			/*
 			* CREATING GIT PROJECT 
 			*/
@@ -109,8 +141,8 @@ function create_project(){
 		/*
 		* CREATING SUBDOMAIN 
 		*/
-		create_subdomain($projectdir,$projecturl,$stage,$language);
-		if($form["wordpress"]!="on"){
+		create_subdomain($projectdir,$projecturl,$stage,$language,$domain);
+		if($wordpress!="on"){
 			$site_path = "/var/www/html/".$projectdir;
 			if($language=="python"){
 				//Create index file
@@ -157,13 +189,14 @@ print(\"<p>Move your Git files to put real site up ;)</p>\")' >> /var/www/html/\
 				display_errors($exec, $output, $return, 'Files with permissions');
 			}
 		}
+		add_project_user($projecturl);
 		sleep(0.5);
 	}
 	
 	$headers = 'From: Wiki <'.get_option('admin_email').'>' . "\r\n";
 	$headers .= "MIME-Version: 1.0\r\n";
 	$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
-	$title = "Instructions to complete set up for project: ".$form["projectname"];
+	$title = "Instructions to complete set up for project: ".$orginal_projectname;
 	$body = "<ol>
 		<li>You're new website URL(s) are:
 			<ul>".
@@ -181,13 +214,35 @@ print(\"<p>Move your Git files to put real site up ;)</p>\")' >> /var/www/html/\
 		</ol>";
 	$email_message = $title."<br>".$body;
 	
-	echo "<p>You've successfully create a new project named: ".$form["projectname"]."</p>";
+	echo "<p>You've successfully created a new project named: ".$orginal_projectname."</p>";
 	echo "<h3>".$title."</h3>";
 	echo $body;
 	
 	wp_mail( get_option('admin_email'), $title, $email_message, $headers );
 	
     die();
+}
+
+function add_project_user($projectdir){
+	//Add new user based on folder name
+	$output = $return = "";
+	$exec = exec ("sudo useradd -p $(openssl passwd -1 575757aA) \"${projectdir}\" -m -g www-data", $output, $return);
+	display_errors($exec, $output, $return, 'New user added');
+	
+	//Add user to user config
+	$output = $return = "";
+	$exec = exec ("sudo sh -c 'echo \"local_root=/var/www/html/\"${projectdir}\"\" >> /etc/vsftpd/user_config_dir/\"${projectdir}\"'", $output, $return);
+	display_errors($exec, $output, $return, 'New user added to user config');
+	
+	//Append file with another user
+	$output = $return = "";
+	$exec = exec ("sudo -- bash -c 'echo \"\"${projectdir}\"\" >> /etc/vsftpd.userlist'", $output, $return);
+	display_errors($exec, $output, $return, 'New user appended to userlist');
+	
+	//Change owner of site
+	$output = $return = "";
+	$exec = exec ("sudo chown \"${projectdir}\":www-data /var/www/html/\"${projectdir}\"", $output, $return);
+	display_errors($exec, $output, $return, 'Changed owner of site');
 }
 
 function create_wordpress_directory($projectdir){
@@ -204,6 +259,11 @@ function create_wordpress_directory($projectdir){
 	/* double quote here because you want PHP to expand $command_with_parameters, a string */
 	$exec = exec("${command_with_parameters}", $output, $return);
 	display_errors($exec, $output, $return, 'Move WordPress files from default site');
+	
+	//Update WP Config with new database creds
+	$output = $return = "";
+	$exec = exec ("sed -i 's/copy/${projectdir}/g' /var/www/html/sweetiebee/wp-config.php", $output, $return);
+	display_errors($exec, $output, $return, 'Update wp_config');
 	
 	//Make files proper permissions
 	$output = $return = "";
@@ -245,14 +305,14 @@ function create_git_project($projectdir,$shfile){
 	//print_r(array(exec('whoami')));
 }
 
-function create_database($projectdir,$shfile){
-	$command_with_parameters = "/var/www/scripts/\"${shfile}\".sh \"${projectdir}\"";
+function create_database($projectdir,$shfile,$domain){
+	$command_with_parameters = "/var/www/scripts/\"${shfile}\".sh \"${projectdir}\" \"${domain}\"";
 	$output = $return = "";
 	$exec = exec("${command_with_parameters}", $output, $return);
 	display_errors($exec, $output, $return, 'Create WordPress Database');
 }
 
-function create_subdomain($projectdir,$projecturl,$stage,$language){
+function create_subdomain($projectdir,$projecturl,$stage,$language,$domain=null){
 	if($language == "python"){
 		if($stage=="main"){
 			$command_with_parameters = "/var/www/scripts/site-add-python.sh \"${projectdir}\" \"${projecturl}\"";
@@ -265,6 +325,9 @@ function create_subdomain($projectdir,$projecturl,$stage,$language){
 		}else{
 			$command_with_parameters = "/var/www/scripts/site-add-password.sh \"${projectdir}\" \"${projecturl}\"";
 		}
+	}
+	if($domain!=""){
+		$command_with_parameters .= " \"${domain}\"";
 	}
 	$output = $return = "";
 	$exec = exec("${command_with_parameters}", $output, $return);

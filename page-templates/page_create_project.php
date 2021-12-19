@@ -46,11 +46,17 @@ foreach($projects as $k=>$project) {
 				<form class="create-project" method="post">
 					<input type="hidden" name="currentprojects" value="<?php echo implode(",",$projects); ?>">
 					<div class="row">
-						<div class="col-lg-12 form-group">
-							<label for="projectname">Name of Project *</label>
+						<div class="col-lg-6 form-group">
+							<label for="projectname">Name of Project (Name of Git project) *</label>
 							<input id="projectname" name="projectname" class="form-control" type="text" required="required"
 							pattern="^[a-zA-Z\s]+$"
 							data-bv-regexp-message="The project name can consist of alphabetical characters and spaces only">
+						</div>
+						<div class="col-lg-6 form-group">
+							<label for="domain">Domain (optional)</label>
+							<input id="domain" name="domain" class="form-control" type="text"
+							pattern="^[a-zA-Z0-9-]+\.?[a-zA-Z0-9-]+\.[a-zA-Z]{2,3}$"
+							data-bv-regexp-message="Domain name without www or http(s)">
 						</div>
 					</div>
 					<h3>Options</h3>
