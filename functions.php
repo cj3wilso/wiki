@@ -157,7 +157,7 @@ print(\"<p>Move your Git files to put real site up ;)</p>\")' >> /var/www/html/\
 				display_errors($exec, $output, $return, 'Create Git Project (create_project function)');
 				//Make folders proper permissions
 				$output = $return = "";
-				$exec = exec ("find \"${site_path}\" -type d -exec chmod 0744 {} +", $output, $return);
+				$exec = exec ("find \"${site_path}\" -type d -exec chmod 0755 {} +", $output, $return);
 				display_errors($exec, $output, $return, 'Folders with permissions');
 				//Make files proper permissions
 				$output = $return = "";
