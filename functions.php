@@ -54,8 +54,7 @@
  
  * 
  * THINGS TO DO 
- * Create ssl certificate
- * Domain record lists ssl when it wasn't created
+ * Domain record lists ssl when it wasn't created (??)
  * Domain not listed in Current Projects list
  * Domain conf file not deleted when delete site
  */
@@ -117,7 +116,13 @@ function create_project(){
 			$projecturl = $projectname."-".$stage;
 		}
 		$siteurl = "https://".$projecturl.".christinewilson.ca";
-		if($domain!="") $siteurl = "https://".$domain;
+		if($domain!=""){
+			if($stage=="main"){
+				$siteurl = "https://".$domain;
+			}else{
+				$siteurl = "https://staging.".$domain;
+			}
+		}
 		$html_url .= "<li><a href='$siteurl' target='_blank'>$siteurl</a></li>";
 		$gitremote .= "<pre>git remote add deploy ssh://christine@35.192.41.230/var/git/".$projectdir.".git/</pre><br>";
 		
@@ -189,7 +194,7 @@ print(\"<p>Move your Git files to put real site up ;)</p>\")' >> /var/www/html/\
 				display_errors($exec, $output, $return, 'Files with permissions');
 			}
 		}
-		add_project_user($projecturl);
+		add_project_user($projectdir);
 		sleep(0.5);
 	}
 	
@@ -208,7 +213,7 @@ print(\"<p>Move your Git files to put real site up ;)</p>\")' >> /var/www/html/\
 				<li>Open terminal and paste this:<br>".
 				$gitremote
 				."</li>
-				<li>Either deploy current files, or add a test file to see that it moves to server</li>
+				<li>Either deploy current files, or add a test file to see that it moves to the server</li>
 			</ul>
 		</li>
 		</ol>";
@@ -227,22 +232,22 @@ function add_project_user($projectdir){
 	//Add new user based on folder name
 	$output = $return = "";
 	$exec = exec ("sudo useradd -p $(openssl passwd -1 575757aA) \"${projectdir}\" -m -g www-data", $output, $return);
-	display_errors($exec, $output, $return, 'New user added');
+	display_errors($exec, $output, $return, 'New user added '.$projectdir);
 	
 	//Add user to user config
 	$output = $return = "";
 	$exec = exec ("sudo sh -c 'echo \"local_root=/var/www/html/\"${projectdir}\"\" >> /etc/vsftpd/user_config_dir/\"${projectdir}\"'", $output, $return);
-	display_errors($exec, $output, $return, 'New user added to user config');
+	display_errors($exec, $output, $return, 'New user added to user config '.$projectdir);
 	
 	//Append file with another user
 	$output = $return = "";
 	$exec = exec ("sudo -- bash -c 'echo \"\"${projectdir}\"\" >> /etc/vsftpd.userlist'", $output, $return);
-	display_errors($exec, $output, $return, 'New user appended to userlist');
+	display_errors($exec, $output, $return, 'New user appended to userlist '.$projectdir);
 	
 	//Change owner of site
 	$output = $return = "";
 	$exec = exec ("sudo chown \"${projectdir}\":www-data /var/www/html/\"${projectdir}\"", $output, $return);
-	display_errors($exec, $output, $return, 'Changed owner of site');
+	display_errors($exec, $output, $return, 'Changed owner of site '.$projectdir);
 }
 
 function create_wordpress_directory($projectdir){
