@@ -111,9 +111,11 @@ function create_project(){
 	$gitremote = $html_url = "";
 	foreach ($stages as $stage) {
 		$projectdir = $projecturl = $projectname;
+		$branch_name = "production";
 		if($stage!="main"){
 			$projectdir = $projectname."_".$stage;
 			$projecturl = $projectname."-".$stage;
+			$branch_name = "staging";
 		}
 		$siteurl = "https://".$projecturl.".christinewilson.ca";
 		if($domain!=""){
@@ -124,7 +126,7 @@ function create_project(){
 			}
 		}
 		$html_url .= "<li><a href='$siteurl' target='_blank'>$siteurl</a></li>";
-		$gitremote .= "<pre>git remote add deploy ssh://christine@35.192.41.230/var/git/".$projectdir.".git/</pre><br>";
+		$gitremote .= "<pre>git remote add server-$branch_name ssh://christine@35.184.97.246/var/git/".$projectdir.".git/</pre><br>";
 		
 		//Is this a WordPress site?
 		if($wordpress=="on"){
