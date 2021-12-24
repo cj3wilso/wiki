@@ -51,7 +51,48 @@
  * See all users in system: less /etc/passwd
  * Delete user and user home: userdel -r usernamehere 
  * https://www.cyberciti.biz/faq/linux-remove-user-command/
- 
+ *
+ * GIT PUSH REMOTE
+ * SETTING UP
+ * Make sure the IP address is correct
+ * Create a user in SourceTree terminal using ssh key with: ssh-keygen
+ * It will ask you where to save file and name of file but will make the username from your computer (Christine)
+ * Find the key in the folder you added to, get contents from the public key and add to Meta Data > SSH Keys in Google Compute
+ * This will create the user with home directory on Google Compute. 
+ * You need to add the user to the www-data group with: usermod -a -G www-data Christine
+ * Add Christine as owner: 
+ * sudo chown Christine:www-data /var/www
+ * chown -R Christine:www-data /var/git
+ * chown -R Christine:www-data /var/env
+ * Add repos on the server: 
+ * git remote add server-staging ssh://Christine@35.184.97.246/var/git/aoleoils_staging.git/
+ * git remote add server-production ssh://Christine@35.184.97.246/var/git/aoleoils.git/
+ * Added public key Christine to Bitbucket (probably not needed)
+ * MANUAL ADDING SSH KEY
+ * Add this line to SourceTree terminal to start ssh agent:
+ * eval `ssh-agent -s`
+ * Add this line to SourceTree terminal to check the agent has identities:
+ * ssh-add -l
+ * Add Christine as an identitiy:
+ * ssh-add C:/Users/Christine/cj3wilso
+ * sudo chmod 600 /Users/RJABBAR/cj3wilso
+ * ssh-add /Users/RJABBAR/cj3wilso
+ * MANUAL DEPLOYING
+ * Stage changes and commit but don't push (don't check checkbox that pushes automatically)
+ * In terminal write:
+ * git push server-staging develop
+ * NOT WORKING
+ * AUTOMATIC ADDING SSH KEY (Will remember)
+ * Tools > Create or Import SSH Keys > Conversions > Import Key
+ * Import the private key, then Save Private Key as cj3wilso.ppk (ppk format is important!)
+ * AUTOMATIC DEPLOYING
+ * LATER: Add a file to the repo, stage it and press the Push button where you'll choose server-staging repo and move develop branch
+ * ERRORS: 
+ * src refspec master does not match any = you probably typed the branch wrong or didn't commit
+ * could not open a connection to your authentication agent = start ssh agent
+ * permission denied: ssh add agent has no identities = add Christine as identity
+ * permission denied (publickey) = identity not defined, start ssh agent and add Christine as identity
+ * remote unpack failed: unable to create temporary object directory = permissions issue on server, change ownership of folders to Christine (www, git, env)
  * 
  * THINGS TO DO 
  * Domain record lists ssl when it wasn't created (??)
