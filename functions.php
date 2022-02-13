@@ -595,3 +595,24 @@ function get_posts_and_pages( $query ) {
 	}
 	return $query;
 }
+
+function get_string_between($string, $start, $end){
+    $string = ' ' . $string;
+    $ini = strpos($string, $start);
+    if ($ini == 0) return '';
+    $ini += strlen($start);
+    $len = strpos($string, $end, $ini) - $ini;
+    return substr($string, $ini, $len);
+}
+
+//Prism will only work with class on the code block, so switch it
+add_filter('render_block', function($block_content, $block) {
+    // Only add a class to Core List blocks
+    if('core/code' === $block['blockName']) {
+		$parsed = get_string_between($block_content, 'language-', '"');
+		$block_content = str_replace('<code', '<code class="language-'.$parsed.'"', $block_content);
+		$block_content = str_replace('pre class="wp-block-code ', 'pre class="', $block_content);
+    }
+    // Always return the content
+    return $block_content;
+}, 10, 2);
