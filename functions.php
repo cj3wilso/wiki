@@ -310,7 +310,7 @@ function create_wordpress_directory($projectdir){
 	
 	//Update WP Config with new database creds
 	$output = $return = "";
-	$exec = exec ("sed -i 's/copy/${projectdir}/g' /var/www/html/sweetiebee/wp-config.php", $output, $return);
+	$exec = exec ("sed -i 's/copy/${projectdir}/g' /var/www/html/${projectdir}/wp-config.php", $output, $return);
 	display_errors($exec, $output, $return, 'Update wp_config');
 	
 	//Make files proper permissions
