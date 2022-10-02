@@ -13,7 +13,7 @@ get_header();
 * This part finds all current projects so we can delete them
 * And also not try to recreate if submitted as a new project
 */
-if($_SERVER['HTTP_HOST'] == "wiki.christinewilson.ca") {
+if($_SERVER['HTTP_HOST'] == "wiki.christinewilson.uk") {
 	$dir = "/var/env";
 }else{
 	$dir = "D:\sites\wiki\wp-content";
@@ -49,8 +49,8 @@ foreach($projects as $k=>$project) {
 						<div class="col-lg-6 form-group">
 							<label for="projectname">Name of Project (Name of Git project) *</label>
 							<input id="projectname" name="projectname" class="form-control" type="text" required="required"
-							pattern="^[a-zA-Z\s]+$"
-							data-bv-regexp-message="The project name can consist of alphabetical characters and spaces only">
+							pattern="^[a-zA-Z0-9\s]+$"
+							data-bv-regexp-message="The project name can consist of characters, digits and spaces only">
 						</div>
 						<div class="col-lg-6 form-group">
 							<label for="domain">Domain (optional)</label>

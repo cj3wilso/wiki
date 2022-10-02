@@ -379,7 +379,7 @@ function create_subdomain($projectdir,$projecturl,$stage,$language,$domain=null)
 	}
 	$output = $return = "";
 	$exec = exec("${command_with_parameters}", $output, $return);
-	display_errors($exec, $output, $return, 'Create Subdomain');
+	display_errors($exec, $output, $return, 'Create Domain, stage is '.$stage);
 }
 
 add_action('wp_ajax_delete_project', 'delete_project');
@@ -414,7 +414,7 @@ function delete_project(){
 				display_errors($exec, $output, $return, 'Project Delete');
 				
 				/*
-				* REMOVE SUBDOMAIN 
+				* REMOVE SUBDOMAIN AND/OR DOMAIN
 				*/
 				$command_with_parameters = "/var/www/scripts/site-remove.sh \"${projecturl}\"";
 				$output = $return = "";
