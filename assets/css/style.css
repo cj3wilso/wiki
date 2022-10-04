@@ -59,6 +59,13 @@ body, button, input, select, textarea {
   color: #898989;
   text-rendering: optimizeLegibility; }
 
+body .logged-in.menu-item {
+	display: none;
+}
+body.logged-in .logged-in.menu-item {
+	display: inline-block;
+}
+
 #secondary {
   font-size: 17px; }
 
