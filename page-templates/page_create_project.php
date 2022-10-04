@@ -18,6 +18,7 @@ if($_SERVER['HTTP_HOST'] == "wiki.christinewilson.uk") {
 }else{
 	$dir = "D:\sites\wiki\wp-content";
 }
+$sites_available = scandir("/etc/apache2/sites-available");
 $projects = scandir($dir);
 $projects_for_delete = $projects;
 foreach($projects as $k=>$project) { 
@@ -145,6 +146,7 @@ foreach($projects as $k=>$project) {
 						<div class="col-lg-12 form-group">
 								<?php 
 								foreach ($projects as $project) {
+									$project_urls = preg_grep("/{$project}/i", $sites_available);
 									$projectname = ucwords(str_replace("-", " ", $project));
 									?>
 									<div class="form-check">
@@ -156,9 +158,17 @@ foreach($projects as $k=>$project) {
 										<?php 
 										}
 										?>
-										<label class="form-check-label" for="<?php echo $project; ?>">
+										<label class="form-check-label" style="font-weight:400" for="<?php echo $project; ?>">
 										<?php
-										echo $projectname ." <a href='$siteurl' target='_blank'>$siteurl</a>"; 
+										$project_string = $projectname." ";
+										$i = 0;
+										foreach ($project_urls as $project_url) {
+											$url = "https://".str_replace(".conf", "", $project_url);
+											if($i != 0) $project_string .= ", ";
+											$project_string .= "<a href='$url' target='_blank'>$url</a>"; 
+											$i++;
+										}
+										echo $project_string;
 										?>
 										</label>
 									</div>

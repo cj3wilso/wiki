@@ -95,9 +95,8 @@
  * remote unpack failed: unable to create temporary object directory = permissions issue on server, change ownership of folders to Christine (www, git, env)
  * 
  * THINGS TO DO 
- * Domain record lists ssl when it wasn't created (??)
- * Domain not listed in Current Projects list
- * Domain conf file not deleted when delete site
+ * Get domains sent to delete scripts so doesn't need to look for all domains at once
+ * Fix up issue with project name and domain name not matching as that'll create issues
  */
  
 define( 'THEME_TEXTDOMAIN', 'wiki-textdomain' );
