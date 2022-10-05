@@ -11,6 +11,7 @@ if($_SERVER['HTTP_HOST']!="wiki.christinewilson.ca"){
 
 add_action( 'wp_enqueue_scripts', 'wiki_scripts' );
 add_action( 'wp_footer', 'wiki_localize', 99 );
+add_action('wp_print_scripts', 'wiki_inline_scripts');
 
 /**
  * Enqueue and register theme scripts.
@@ -54,6 +55,26 @@ function wiki_scripts() {
 	wp_enqueue_style( 'prism', get_stylesheet_directory_uri() . '/assets/css/prism.css', 'twentyseventeen-style', $version );
     wp_enqueue_script( 'prism', get_stylesheet_directory_uri() . '/assets/js/prism.js', 'twentyseventeen', $version, true );
 
+}
+
+function wiki_inline_scripts(){
+	//Only track if not logged in or is a customer
+	//Using this generic logic on all websites
+	global $current_user;
+	if ( !isset( $current_user->roles[0] ) || $current_user->roles[0] == 'customer' ) {
+	?>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-2K9ZPFTB1S"></script>
+	<?php
+	}
+	?>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+	  gtag('config', 'G-2K9ZPFTB1S');
+	</script>
+	<?php
 }
 
 
