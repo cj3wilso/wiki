@@ -95,6 +95,7 @@
  * remote unpack failed: unable to create temporary object directory = permissions issue on server, change ownership of folders to Christine (www, git, env)
  * 
  * THINGS TO DO 
+ * REMOVE SSL CERTIFICATES FOR DOMAIN WHEN DELETE WEBSITE
  * Get domains sent to delete scripts so doesn't need to look for all domains at once
  * Fix up issue with project name and domain name not matching as that'll create issues
  */
@@ -258,6 +259,7 @@ print(\"<p>Move your Git files to put real site up ;)</p>\")' >> /var/www/html/\
 				<li>Either deploy current files, or add a test file to see that it moves to the server</li>
 			</ul>
 		</li>
+		<li>DOWNLOAD AND UPDATE HTACCESS TO ONLY REDIRECT COMMENT POSTING WHEN REFERRER IS NOT NEW DOMAIN</li>
 		</ol>";
 	$email_message = $title."<br>".$body;
 	
